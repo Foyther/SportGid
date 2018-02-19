@@ -1,0 +1,12 @@
+jdbc.driver =org.postgresql.Driver
+jdbc.uri =jdbc:postgresql://localhost:5432/yourjorney
+db.user =
+db.password = 
+
+hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+hibernate.show_sql=true
+entitymanager.packages.to.scan=android.kfu.entities
+hibernate.hbm2ddl.auto =update
+hibernate.enable_lazy_load_no_trans=true
+
+crypter.soil=

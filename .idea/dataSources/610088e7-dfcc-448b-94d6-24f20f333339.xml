@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="postgres@localhost">
+  <database-model serializer="dbm" rdbms="POSTGRES" format-version="4.2">
+    <root id="1"/>
+    <database id="2" parent="1" name="postgres">
+      <ObjectId>12401</ObjectId>
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </database>
+    <schema id="3" parent="2" name="public">
+      <ObjectId>2200</ObjectId>
+      <IntrospectionTimestamp>2017-12-19.12:20:01.278</IntrospectionTimestamp>
+      <IntrospectionStateNumber>2106</IntrospectionStateNumber>
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="4" parent="2" name="pg_catalog">
+      <ObjectId>11</ObjectId>
+    </schema>
+    <schema id="5" parent="2" name="pg_toast">
+      <ObjectId>99</ObjectId>
+    </schema>
+    <schema id="6" parent="2" name="pg_temp_1">
+      <ObjectId>11848</ObjectId>
+    </schema>
+    <schema id="7" parent="2" name="pg_toast_temp_1">
+      <ObjectId>11849</ObjectId>
+    </schema>
+    <schema id="8" parent="2" name="information_schema">
+      <ObjectId>12113</ObjectId>
+    </schema>
+    <sequence id="9" parent="3" name="hibernate_sequence">
+      <ObjectId>28297</ObjectId>
+      <StateNumber>2079</StateNumber>
+      <SequenceIdentity>1</SequenceIdentity>
+    </sequence>
+    <table id="10" parent="3" name="complaints">
+      <ObjectId>28299</ObjectId>
+      <StateNumber>2093</StateNumber>
+    </table>
+    <table id="11" parent="3" name="events">
+      <ObjectId>28304</ObjectId>
+      <StateNumber>2104</StateNumber>
+    </table>
+    <table id="12" parent="3" name="kind_of_sports">
+      <ObjectId>28312</ObjectId>
+      <StateNumber>2105</StateNumber>
+    </table>
+    <table id="13" parent="3" name="places">
+      <ObjectId>28320</ObjectId>
+      <StateNumber>2101</StateNumber>
+    </table>
+    <table id="14" parent="3" name="places_kind_of_sports">
+      <ObjectId>28328</ObjectId>
+      <StateNumber>2099</StateNumber>
+    </table>
+    <table id="15" parent="3" name="reviews">
+      <ObjectId>28333</ObjectId>
+      <StateNumber>2102</StateNumber>
+    </table>
+    <table id="16" parent="3" name="user_tokens">
+      <ObjectId>28338</ObjectId>
+      <StateNumber>2103</StateNumber>
+    </table>
+    <table id="17" parent="3" name="users">
+      <ObjectId>28346</ObjectId>
+      <StateNumber>2106</StateNumber>
+    </table>
+    <table id="18" parent="3" name="users_kind_of_sports">
+      <ObjectId>28354</ObjectId>
+      <StateNumber>2106</StateNumber>
+    </table>
+    <column id="19" parent="10" name="id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2080</StateNumber>
+    </column>
+    <column id="20" parent="10" name="body">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <StateNumber>2080</StateNumber>
+    </column>
+    <column id="21" parent="10" name="date">
+      <Position>3</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>2080</StateNumber>
+    </column>
+    <column id="22" parent="10" name="places">
+      <Position>4</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>2080</StateNumber>
+    </column>
+    <column id="23" parent="10" name="users">
+      <Position>5</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>2080</StateNumber>
+    </column>
+    <index id="24" parent="10" name="complaints_pkey">
+      <ObjectId>28302</ObjectId>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="25" parent="10" name="complaints_pkey">
+      <ObjectId>28303</ObjectId>
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>complaints_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="26" parent="10" name="fkjqaf26e141do7ou3uhq6jfh3w">
+      <ObjectId>28365</ObjectId>
+      <ColNames>places</ColNames>
+      <RefTableName>places</RefTableName>
+      <RefKeyName>places_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="27" parent="10" name="fkj78hgsiky1s5ls8q6idlo7dcv">
+      <ObjectId>28370</ObjectId>
+      <ColNames>users</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefKeyName>users_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="28" parent="11" name="id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2081</StateNumber>
+    </column>
+    <column id="29" parent="11" name="description">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <StateNumber>2081</StateNumber>
+    </column>
+    <column id="30" parent="11" name="maxofmembers">
+      <Position>3</Position>
+      <DataType>integer|0</DataType>
+      <StateNumber>2081</StateNumber>
+    </column>
+    <column id="31" parent="11" name="photo">
+      <Position>4</Position>
+      <DataType>varchar(255)|0</DataType>
+      <StateNumber>2081</StateNumber>
+    </column>
+    <column id="32" parent="11" name="price">
+      <Position>5</Position>
+      <DataType>integer|0</DataType>
+      <StateNumber>2081</StateNumber>
+    </column>
+    <column id="33" parent="11" name="rating">
+      <Position>6</Position>
+      <DataType>integer|0</DataType>
+      <StateNumber>2081</StateNumber>
+    </column>
+    <column id="34" parent="11" name="title">
+      <Position>7</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2081</StateNumber>
+    </column>
+    <column id="35" parent="11" name="avtor">
+      <Position>8</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>2081</StateNumber>
+    </column>
+    <column id="36" parent="11" name="places">
+      <Position>9</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>2081</StateNumber>
+    </column>
+    <column id="37" parent="11" name="sports">
+      <Position>10</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>2081</StateNumber>
+    </column>
+    <index id="38" parent="11" name="events_pkey">
+      <ObjectId>28310</ObjectId>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="39" parent="11" name="events_pkey">
+      <ObjectId>28311</ObjectId>
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>events_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="40" parent="11" name="fkk3y57qih1gsnvuvmiiivftl2">
+      <ObjectId>28375</ObjectId>
+      <ColNames>avtor</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefKeyName>users_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="41" parent="11" name="fkc0x63mt256bu5ynx21jqa7g2b">
+      <ObjectId>28380</ObjectId>
+      <ColNames>places</ColNames>
+      <RefTableName>places</RefTableName>
+      <RefKeyName>places_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="42" parent="11" name="fkvvl664dgdfon2q12gftf1dxr">
+      <ObjectId>28385</ObjectId>
+      <ColNames>sports</ColNames>
+      <RefTableName>kind_of_sports</RefTableName>
+      <RefKeyName>kind_of_sports_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="43" parent="12" name="id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2082</StateNumber>
+    </column>
+    <column id="44" parent="12" name="name">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2082</StateNumber>
+    </column>
+    <column id="45" parent="12" name="photo">
+      <Position>3</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2082</StateNumber>
+    </column>
+    <index id="46" parent="12" name="kind_of_sports_pkey">
+      <ObjectId>28318</ObjectId>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="47" parent="12" name="kind_of_sports_pkey">
+      <ObjectId>28319</ObjectId>
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>kind_of_sports_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="48" parent="13" name="id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2083</StateNumber>
+    </column>
+    <column id="49" parent="13" name="address">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <StateNumber>2083</StateNumber>
+    </column>
+    <column id="50" parent="13" name="city">
+      <Position>3</Position>
+      <DataType>varchar(255)|0</DataType>
+      <StateNumber>2083</StateNumber>
+    </column>
+    <column id="51" parent="13" name="contacts">
+      <Position>4</Position>
+      <DataType>varchar(255)|0</DataType>
+      <StateNumber>2083</StateNumber>
+    </column>
+    <column id="52" parent="13" name="description">
+      <Position>5</Position>
+      <DataType>varchar(255)|0</DataType>
+      <StateNumber>2083</StateNumber>
+    </column>
+    <column id="53" parent="13" name="photo">
+      <Position>6</Position>
+      <DataType>varchar(255)|0</DataType>
+      <StateNumber>2083</StateNumber>
+    </column>
+    <column id="54" parent="13" name="rating">
+      <Position>7</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2083</StateNumber>
+    </column>
+    <column id="55" parent="13" name="title">
+      <Position>8</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2083</StateNumber>
+    </column>
+    <column id="56" parent="13" name="users">
+      <Position>9</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>2083</StateNumber>
+    </column>
+    <index id="57" parent="13" name="places_pkey">
+      <ObjectId>28326</ObjectId>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="58" parent="13" name="places_pkey">
+      <ObjectId>28327</ObjectId>
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>places_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="59" parent="13" name="fk23e26xurx4tfthn7rku1jpgh4">
+      <ObjectId>28390</ObjectId>
+      <ColNames>users</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefKeyName>users_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="60" parent="14" name="places_id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2084</StateNumber>
+    </column>
+    <column id="61" parent="14" name="sport_id">
+      <Position>2</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2084</StateNumber>
+    </column>
+    <index id="62" parent="14" name="places_kind_of_sports_pkey">
+      <ObjectId>28331</ObjectId>
+      <ColNames>places_id
+sport_id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="63" parent="14" name="places_kind_of_sports_pkey">
+      <ObjectId>28332</ObjectId>
+      <ColNames>places_id
+sport_id</ColNames>
+      <UnderlyingIndexName>places_kind_of_sports_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="64" parent="14" name="fk7q0c84bthjkbs5wdjqmyqvdvq">
+      <ObjectId>28400</ObjectId>
+      <ColNames>places_id</ColNames>
+      <RefTableName>places</RefTableName>
+      <RefKeyName>places_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="65" parent="14" name="fkk7s0sm8r38nvkar3p3mx7chpo">
+      <ObjectId>28395</ObjectId>
+      <ColNames>sport_id</ColNames>
+      <RefTableName>kind_of_sports</RefTableName>
+      <RefKeyName>kind_of_sports_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="66" parent="15" name="id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2085</StateNumber>
+    </column>
+    <column id="67" parent="15" name="body">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <StateNumber>2085</StateNumber>
+    </column>
+    <column id="68" parent="15" name="date">
+      <Position>3</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>2085</StateNumber>
+    </column>
+    <column id="69" parent="15" name="rating">
+      <Position>4</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2085</StateNumber>
+    </column>
+    <column id="70" parent="15" name="events">
+      <Position>5</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>2085</StateNumber>
+    </column>
+    <column id="71" parent="15" name="places">
+      <Position>6</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>2085</StateNumber>
+    </column>
+    <column id="72" parent="15" name="users">
+      <Position>7</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>2085</StateNumber>
+    </column>
+    <index id="73" parent="15" name="reviews_pkey">
+      <ObjectId>28336</ObjectId>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="74" parent="15" name="reviews_pkey">
+      <ObjectId>28337</ObjectId>
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>reviews_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="75" parent="15" name="fkckd1hu19uek6firt0fkon7ycd">
+      <ObjectId>28405</ObjectId>
+      <ColNames>events</ColNames>
+      <RefTableName>events</RefTableName>
+      <RefKeyName>events_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="76" parent="15" name="fklbiilab8f3ej57q17uwld40hn">
+      <ObjectId>28410</ObjectId>
+      <ColNames>places</ColNames>
+      <RefTableName>places</RefTableName>
+      <RefKeyName>places_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="77" parent="15" name="fkbpr6r2g31v6hmrot9fyf4oo3y">
+      <ObjectId>28415</ObjectId>
+      <ColNames>users</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefKeyName>users_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="78" parent="16" name="id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2086</StateNumber>
+    </column>
+    <column id="79" parent="16" name="access_token">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2086</StateNumber>
+    </column>
+    <column id="80" parent="16" name="expires_in">
+      <Position>3</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2086</StateNumber>
+    </column>
+    <column id="81" parent="16" name="refresh_token">
+      <Position>4</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2086</StateNumber>
+    </column>
+    <column id="82" parent="16" name="user_id">
+      <Position>5</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>2086</StateNumber>
+    </column>
+    <index id="83" parent="16" name="user_tokens_pkey">
+      <ObjectId>28344</ObjectId>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="84" parent="16" name="uk_smgyfi1sq2nq7vt5xrxua00mr">
+      <ObjectId>28359</ObjectId>
+      <ColNames>access_token</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="85" parent="16" name="uk_p5f4yvcsple9h1uvmkji9efty">
+      <ObjectId>28361</ObjectId>
+      <ColNames>refresh_token</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="86" parent="16" name="user_tokens_pkey">
+      <ObjectId>28345</ObjectId>
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>user_tokens_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <key id="87" parent="16" name="uk_smgyfi1sq2nq7vt5xrxua00mr">
+      <ObjectId>28360</ObjectId>
+      <ColNames>access_token</ColNames>
+      <UnderlyingIndexName>uk_smgyfi1sq2nq7vt5xrxua00mr</UnderlyingIndexName>
+    </key>
+    <key id="88" parent="16" name="uk_p5f4yvcsple9h1uvmkji9efty">
+      <ObjectId>28362</ObjectId>
+      <ColNames>refresh_token</ColNames>
+      <UnderlyingIndexName>uk_p5f4yvcsple9h1uvmkji9efty</UnderlyingIndexName>
+    </key>
+    <foreign-key id="89" parent="16" name="fk61iiu6gfevpvo2v3yl76sar7r">
+      <ObjectId>28420</ObjectId>
+      <ColNames>user_id</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefKeyName>users_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="90" parent="17" name="id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2087</StateNumber>
+    </column>
+    <column id="91" parent="17" name="avatar">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <StateNumber>2087</StateNumber>
+    </column>
+    <column id="92" parent="17" name="city">
+      <Position>3</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2087</StateNumber>
+    </column>
+    <column id="93" parent="17" name="email">
+      <Position>4</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2087</StateNumber>
+    </column>
+    <column id="94" parent="17" name="gender">
+      <Position>5</Position>
+      <DataType>varchar(255)|0</DataType>
+      <StateNumber>2087</StateNumber>
+    </column>
+    <column id="95" parent="17" name="name">
+      <Position>6</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2087</StateNumber>
+    </column>
+    <column id="96" parent="17" name="password">
+      <Position>7</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2087</StateNumber>
+    </column>
+    <column id="97" parent="17" name="surname">
+      <Position>8</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2087</StateNumber>
+    </column>
+    <column id="98" parent="17" name="event">
+      <Position>9</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>2087</StateNumber>
+    </column>
+    <index id="99" parent="17" name="users_pkey">
+      <ObjectId>28352</ObjectId>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="100" parent="17" name="uk_6dotkott2kjsp8vw4d0m25fb7">
+      <ObjectId>28363</ObjectId>
+      <ColNames>email</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="101" parent="17" name="users_pkey">
+      <ObjectId>28353</ObjectId>
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>users_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <key id="102" parent="17" name="uk_6dotkott2kjsp8vw4d0m25fb7">
+      <ObjectId>28364</ObjectId>
+      <ColNames>email</ColNames>
+      <UnderlyingIndexName>uk_6dotkott2kjsp8vw4d0m25fb7</UnderlyingIndexName>
+    </key>
+    <foreign-key id="103" parent="17" name="fkhu7cb2ta2ntaeduj30qrsw6qd">
+      <ObjectId>28425</ObjectId>
+      <ColNames>event</ColNames>
+      <RefTableName>events</RefTableName>
+      <RefKeyName>events_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="104" parent="18" name="users_id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2088</StateNumber>
+    </column>
+    <column id="105" parent="18" name="interest_id">
+      <Position>2</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>2088</StateNumber>
+    </column>
+    <index id="106" parent="18" name="users_kind_of_sports_pkey">
+      <ObjectId>28357</ObjectId>
+      <ColNames>users_id
+interest_id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="107" parent="18" name="users_kind_of_sports_pkey">
+      <ObjectId>28358</ObjectId>
+      <ColNames>users_id
+interest_id</ColNames>
+      <UnderlyingIndexName>users_kind_of_sports_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="108" parent="18" name="fkidkso4ae8ikb7jcnmxskhojkw">
+      <ObjectId>28435</ObjectId>
+      <ColNames>users_id</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefKeyName>users_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="109" parent="18" name="fkcpg3m4tbkvp3s3whr5l1ou2mj">
+      <ObjectId>28430</ObjectId>
+      <ColNames>interest_id</ColNames>
+      <RefTableName>kind_of_sports</RefTableName>
+      <RefKeyName>kind_of_sports_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+  </database-model>
+</dataSource>
