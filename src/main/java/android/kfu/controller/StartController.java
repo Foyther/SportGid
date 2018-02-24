@@ -1,6 +1,9 @@
 package android.kfu.controller;
 
+import android.kfu.entities.KindOfSport;
 import android.kfu.entities.Place;
+import android.kfu.service.api.KindOfSportsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +19,15 @@ import java.util.Set;
 @RequestMapping("/")
 public class StartController {
 
+
+    @Autowired
+    private KindOfSportsService service;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String sportPlacesByIdAndCity(){
+        KindOfSport kindOfSport= new KindOfSport();
+        kindOfSport.setName("Football");
+        service.save(kindOfSport);
         return "New page";
     }
 
