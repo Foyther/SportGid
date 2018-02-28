@@ -27,7 +27,9 @@ public class StartController {
     public String sportPlacesByIdAndCity(){
         KindOfSport kindOfSport= new KindOfSport();
         kindOfSport.setName("Football");
+        kindOfSport.setPhoto("photo");
         service.save(kindOfSport);
+
         return "New page";
     }
 
