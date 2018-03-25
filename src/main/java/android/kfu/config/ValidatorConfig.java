@@ -18,13 +18,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackages = {"android.kfu.form.validator"})
 public class ValidatorConfig {
-    
+
     @Autowired
     @Bean
     public RegistrationFormValidator registrationFormValidator(EmailValidator emailValidator) {
         return new RegistrationFormValidatorImpl(1, 128, 5, 256, 6, 256, emailValidator);
     }
-    
+
     @Autowired
     @Bean
     public EditProfileFormValidator editProfileFormValidator(EmailValidator emailValidator) {

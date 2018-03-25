@@ -19,8 +19,10 @@ import java.util.Properties;
 import javax.servlet.MultipartConfigElement;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @Configuration
+@EnableWebSecurity
 @EnableJpaRepositories(basePackages = {"android.kfu.repository"})
 @ComponentScan(basePackages = {"android.kfu.entities"})
 @PropertySource({"classpath:/application.properties"})
@@ -70,7 +72,7 @@ public class RootConfig {
         properties.put("hibernate.enable_lazy_load_no_trans", this.env.getRequiredProperty("hibernate.enable_lazy_load_no_trans"));
         return properties;
     }
-    
+
     @Bean
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();

@@ -58,6 +58,7 @@ public class PlaceController {
                          String title,
                          String description,
                          String city,
+                         String photo,
                          @RequestParam("sport") List<Long> sport) {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
@@ -69,6 +70,7 @@ public class PlaceController {
             place.setTitle(title);
             place.setDescription(description);
             place.setCity(city);
+            place.setPhoto(photo);
             placeService.save(place);
         } catch (PlaceNotFoundException e) {
             e.printStackTrace();

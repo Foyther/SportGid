@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackages = {"android.kfu.service"})
 public class ServiceConfig {
-    
+
     @Bean
     public AuthService authService() {
         return new AuthServiceImpl(60 * 60 * 60 * 1000);
-    } 
+    }
 }

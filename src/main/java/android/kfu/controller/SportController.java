@@ -3,6 +3,7 @@ package android.kfu.controller;
 import android.kfu.entities.Event;
 import android.kfu.entities.KindOfSport;
 import android.kfu.entities.Place;
+import android.kfu.entities.User;
 import android.kfu.service.api.ErrorCodes;
 import android.kfu.service.api.EventService;
 import android.kfu.service.api.KindOfSportsService;
@@ -78,5 +79,19 @@ public class SportController {
         }
         return result;
     }
+
+    public void addKoS(String s){
+        KindOfSport temp = new KindOfSport();
+        temp.setName(s);
+        temp.setPhoto("photo");
+        service.save(temp);
+    }
+//
+//    public void addUser(){
+//        User temp = new User();
+//        temp.setName(s);
+//        temp.setPhoto("photo");
+//        service.save(temp);
+//    }
 
 }

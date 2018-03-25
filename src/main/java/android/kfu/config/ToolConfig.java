@@ -18,11 +18,11 @@ import org.springframework.core.env.Environment;
 @PropertySource({"classpath:/application.properties"})
 @ComponentScan(basePackages = {"android.kfu.tools"})
 public class ToolConfig {
-    
+
     @Autowired
     private Environment env;
 
-    @Bean 
+    @Bean
     public Crypter crypter() {
         return new Md5Crypter(this.env.getProperty("crypter.soil"));
     }
