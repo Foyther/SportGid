@@ -19,7 +19,6 @@ import java.util.Properties;
 import javax.servlet.MultipartConfigElement;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @Configuration
 @EnableJpaRepositories(basePackages = {"android.kfu.repository"})
