@@ -22,7 +22,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @Configuration
-@EnableWebSecurity
 @EnableJpaRepositories(basePackages = {"android.kfu.repository"})
 @ComponentScan(basePackages = {"android.kfu.entities"})
 @PropertySource({"classpath:/application.properties"})
