@@ -72,6 +72,7 @@ public class SportController {
     @RequestMapping(method = RequestMethod.GET)
     public ApiResult allSports() {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
+        addKoS("Volleyball");
         try{
             result.setBody(service.getAll());
         } catch (KindOfSportNotFoundException ex){

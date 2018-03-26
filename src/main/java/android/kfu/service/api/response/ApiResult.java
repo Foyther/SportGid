@@ -7,7 +7,9 @@ package android.kfu.service.api.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-public class ApiResult {
+import java.io.Serializable;
+
+public class ApiResult implements Serializable {
     
     private int code;
     
