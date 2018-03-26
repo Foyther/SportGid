@@ -29,4 +29,6 @@ public interface PlaceRepository extends JpaRepository<Place, Long>{
 
     Set<Place> findAllByCityAndSport(KindOfSport sport, String city);
 
+    void deleteById(int i);
+
 }

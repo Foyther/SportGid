@@ -48,8 +48,12 @@ public class PlaceServiceImpl implements PlaceService {
         return placeRepository.findAllBySportAndCity(sport, city);
     }
 
+    @Override
+    public void deleteById(int i) throws PlaceNotFoundException {
+        placeRepository.deleteById(i);
+    }
 
-//    @Override
+    //    @Override
 //    public PlacesResult getShortInfoPlacesByLocation(String city, User userWhoBrowses) throws IllegalArgumentException{
 //
 //        if (city == null) {
