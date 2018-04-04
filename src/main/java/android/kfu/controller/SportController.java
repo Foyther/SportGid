@@ -12,7 +12,6 @@ import android.kfu.service.api.exception.NotFound.EventNotFoundException;
 import android.kfu.service.api.exception.NotFound.KindOfSportNotFoundException;
 import android.kfu.service.api.exception.NotFound.PlaceNotFoundException;
 import android.kfu.service.api.response.ApiResult;
-import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

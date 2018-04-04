@@ -4,7 +4,6 @@ import android.kfu.entities.Review;
 import android.kfu.repository.ReviewRepository;
 import android.kfu.service.api.ReviewService;
 import android.kfu.service.api.exception.NotFound.ReviewNotFoundException;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
