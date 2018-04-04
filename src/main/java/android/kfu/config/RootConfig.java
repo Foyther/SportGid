@@ -66,12 +66,6 @@ public class RootConfig {
         return transactionManager;
     }
 
-    @Bean
-    public TransactionTemplate transactionTemplate() throws PropertyVetoException {
-        TransactionTemplate template = new TransactionTemplate(transactionManager());
-        return template;
-    }
-
     private Properties getHibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", this.env.getRequiredProperty("hibernate.dialect"));
