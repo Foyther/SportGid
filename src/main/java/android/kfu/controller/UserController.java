@@ -27,13 +27,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/v1")
 public class UserController {
-    
+
     @Autowired
     private ErrorCodes errorCodes;
 
@@ -45,12 +46,12 @@ public class UserController {
 
     @Autowired
     private KindOfSportsService kindOfSportsService;
-    
+
     @RequestMapping(value = "/profile")
     public ApiResult profile(String token) {
-        
+
         ApiResult result = new ApiResult(errorCodes.getSuccess());
-        
+
         try {
             User user = userService.getByAccessToken(token);
             if (user != null) {
@@ -65,17 +66,16 @@ public class UserController {
             result.setCode(errorCodes.getPermissionDenied());
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
         return result;
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.POST) 
+    @RequestMapping(value = "/profile", method = RequestMethod.POST)
     public ApiResult editProfile(String token,
                                  String city) {
-        
+
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
-            if(authService.isAccessTokenActive(token)){
+            if (authService.isAccessTokenActive(token)) {
                 User user = userService.getByAccessToken(token);
                 user.setCity(city);
                 userService.save(user);
@@ -87,7 +87,7 @@ public class UserController {
             result.setCode(errorCodes.getPermissionDenied());
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return result;
     }
 
@@ -97,7 +97,7 @@ public class UserController {
         try {
             User user = userService.getById(id);
             result.setBody(user);
-        } catch (UserNotFoundException ex){
+        } catch (UserNotFoundException ex) {
             result.setCode(errorCodes.getNotFound());
         }
         return result;
@@ -105,13 +105,13 @@ public class UserController {
 
     @RequestMapping(value = "/interest", method = RequestMethod.POST)
     public ApiResult addInterest(String token,
-                         @RequestParam("interest") List<Long> interest) {
+                                 @RequestParam("interest") List<Long> interest) {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
             User user = userService.getByAccessToken(token);
             user.setInterest(debilofkusok(interest));
             userService.save(user);
-        }catch (KindOfSportNotFoundException e){
+        } catch (KindOfSportNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
         } catch (UserNotFoundException e) {
             result.setCode(errorCodes.getPermissionDenied());
@@ -121,14 +121,13 @@ public class UserController {
         return result;
     }
 
-    private Set<KindOfSport> debilofkusok(List<Long> yaUzheNeChelovek){
+    private Set<KindOfSport> debilofkusok(List<Long> yaUzheNeChelovek) {
         Set<KindOfSport> set = new HashSet<>();
-        for (Long i: yaUzheNeChelovek){
+        for (Long i : yaUzheNeChelovek) {
             set.add(kindOfSportsService.getById(i));
         }
         return set;
     }
 
 
-    
 }
