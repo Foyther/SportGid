@@ -62,7 +62,7 @@ public class RootConfig {
     public JpaTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(this.entityManagerFactory().getObject());
-        transactionManager.setDataSource(this.dataSource());
+//        transactionManager.setDataSource(this.dataSource());
         return transactionManager;
     }
 
