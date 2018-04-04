@@ -6,6 +6,7 @@ import android.kfu.entities.Place;
 import android.kfu.repository.EventRepository;
 import android.kfu.service.api.EventService;
 import android.kfu.service.api.exception.NotFound.EventNotFoundException;
+import android.kfu.service.api.exception.NotFound.PlaceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,11 @@ public class EventServiceImpl implements EventService{
     @Override
     public Set<Event> getAllByTitle(KindOfSport sport) throws EventNotFoundException{
         return eventRepository.findAllBySport(sport);
+    }
+
+    @Override
+    public void deleteById(Long id) throws EventNotFoundException {
+        eventRepository.delete(id);
     }
 
     @Override

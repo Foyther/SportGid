@@ -32,6 +32,16 @@ public class Complaint implements Serializable{
     @JoinColumn(name = "places")
     private Place place;
 
+    public Complaint(Long complaintDate, User user, String body, Place place) {
+        this.complaintDate = complaintDate;
+        this.user = user;
+        this.body = body;
+        this.place = place;
+    }
+
+    public Complaint() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -88,7 +98,8 @@ public class Complaint implements Serializable{
 
     @Override
     public int hashCode() {
-        int result = getId().hashCode();
+//        int result = getId().hashCode();
+        int result = 0;
         result = 31 * result + getComplaintDate().hashCode();
         result = 31 * result + getUser().hashCode();
         result = 31 * result + getBody().hashCode();

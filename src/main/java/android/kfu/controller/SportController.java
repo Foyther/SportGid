@@ -12,6 +12,7 @@ import android.kfu.service.api.exception.NotFound.EventNotFoundException;
 import android.kfu.service.api.exception.NotFound.KindOfSportNotFoundException;
 import android.kfu.service.api.exception.NotFound.PlaceNotFoundException;
 import android.kfu.service.api.response.ApiResult;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -53,6 +54,7 @@ public class SportController {
         return result;
     }
 
+    //TODO
     @RequestMapping(value = "/{id}/events", method = RequestMethod.GET)
     public ApiResult sportEventsByIdAndCity(@PathVariable("id") long id,
                                              String city) {
@@ -72,7 +74,6 @@ public class SportController {
     @RequestMapping(method = RequestMethod.GET)
     public ApiResult allSports() {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
-//        addKoS("Volleyball");
         try{
             result.setBody(service.getAll());
         } catch (KindOfSportNotFoundException ex){
@@ -81,18 +82,15 @@ public class SportController {
         return result;
     }
 
-    public void addKoS(String s){
-        KindOfSport temp = new KindOfSport();
-        temp.setName(s);
-        temp.setPhoto("photo");
-        service.save(temp);
+    @RequestMapping(value = "/search",method = RequestMethod.GET)
+    public ApiResult allSportsByNameIsLike(String name) {
+        ApiResult result = new ApiResult(errorCodes.getSuccess());
+        try{
+            Set<KindOfSport> allByNameIsLike = service.getAllByNameIsLike(name);
+            result.setBody(allByNameIsLike);
+        } catch (KindOfSportNotFoundException ex){
+            result.setCode(errorCodes.getNotFound());
+        }
+        return result;
     }
-//
-//    public void addUser(){
-//        User temp = new User();
-//        temp.setName(s);
-//        temp.setPhoto("photo");
-//        service.save(temp);
-//    }
-
 }

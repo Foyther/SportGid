@@ -20,6 +20,8 @@ public interface EventService {
 
     Set<Event> getAllByTitle(KindOfSport sport) throws EventNotFoundException;
 
+    void deleteById(Long id) throws EventNotFoundException;
+
     public Set<Event> getAllByTitleDesc(KindOfSport sport, String city) throws EventNotFoundException;
     public Set<Event> getAllByRating(KindOfSport sport, String city) throws EventNotFoundException;
     public Set<Event> getAllByRatingDesc(KindOfSport sport, String city) throws EventNotFoundException;

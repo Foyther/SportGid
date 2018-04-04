@@ -58,9 +58,9 @@ public class AuthController {
         } catch (IncorrectLoginDataException ex) {
             result.setCode(errorCodes.getInvalidLoginOrPassword());
         } catch (UserNotFoundException e) {
-            e.printStackTrace();
+            result.setCode(errorCodes.getNotFound());
         } catch (DeadAccessTokenException e) {
-            e.printStackTrace();
+            result.setCode(errorCodes.getInvalidOrOldAccessToken());
         }
 
         return result;

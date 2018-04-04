@@ -17,18 +17,15 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlaceRepository extends JpaRepository<Place, Long>{
-    @Query(value = "SELECT * from places\n" +
-            "WHERE places.city = ?2 AND\n" +
-            "      not exists(select places_kind_of_sports.places_id\n" +
-            "      from places_kind_of_sports\n" +
-            "WHERE NOT exists(\n" +
-            "      (SELECT kind_of_sports.id FROM kind_of_sports))",nativeQuery = true)
-    Set<Place> findAllOrderedByRating(KindOfSport sport, String city);
+//    @Query(value = "SELECT * from places\n" +
+//            "WHERE places.city = ?2 AND\n" +
+//            "      not exists(select places_kind_of_sports.places_id\n" +
+//            "      from places_kind_of_sports\n" +
+//            "WHERE NOT exists(\n" +
+//            "      (SELECT kind_of_sports.id FROM kind_of_sports))",nativeQuery = true)
+//    Set<Place> findAllOrderedByRating(KindOfSport sport, String city);
 
     Set<Place> findAllBySportAndCity(KindOfSport sport, String city);
-
-    Set<Place> findAllByCityAndSport(KindOfSport sport, String city);
-
-    void deleteById(int i);
+    Place findById(Long i);
 
 }

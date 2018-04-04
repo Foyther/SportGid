@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -26,7 +27,6 @@ public class Place implements Serializable{
     @Column(name = "title")
     private String title;
 
-    @NotNull
     @Column(name = "rating")
     private int rating;
     
@@ -35,8 +35,8 @@ public class Place implements Serializable{
 
     @Column(name = "address")
     private String address;
-    
-    @Column(name = "photo")
+
+    @Column(name = "photo", length = 1000)
     private String photo;
 
     @Column(name = "city")

@@ -15,10 +15,13 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import javax.sql.DataSource;
+import java.beans.PropertyVetoException;
 import java.util.Properties;
 import javax.servlet.MultipartConfigElement;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @Configuration
 @EnableJpaRepositories(basePackages = {"android.kfu.repository"})
@@ -59,7 +62,14 @@ public class RootConfig {
     public JpaTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(this.entityManagerFactory().getObject());
+        transactionManager.setDataSource(this.dataSource());
         return transactionManager;
+    }
+
+    @Bean
+    public TransactionTemplate transactionTemplate() throws PropertyVetoException {
+        TransactionTemplate template = new TransactionTemplate(transactionManager());
+        return template;
     }
 
     private Properties getHibernateProperties() {

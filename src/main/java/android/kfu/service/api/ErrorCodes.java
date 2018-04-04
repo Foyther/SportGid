@@ -5,10 +5,6 @@
  */
 package android.kfu.service.api;
 
-/**
- *
- * @author rtmss
- */
 public interface ErrorCodes {
  
     int getSuccess();

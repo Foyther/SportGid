@@ -32,9 +32,9 @@ public class StartController {
         return "New page";
     }
 
-    public void deletePlaceById(int i) throws PlaceNotFoundException {
-        placeService.deleteById(2);
-    }
+//    public void deletePlaceById(int i) throws PlaceNotFoundException {
+//        placeService.deleteById(10l);
+//    }
 
 }
 

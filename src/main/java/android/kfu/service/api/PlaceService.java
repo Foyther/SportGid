@@ -16,5 +16,5 @@ public interface PlaceService{
     public Place getById(Long id) throws PlaceNotFoundException;
     public void save(Place place) throws PlaceNotFoundException;
     public Set<Place> getAllByTitle(KindOfSport sport, String city) throws PlaceNotFoundException;
-    public void deleteById(int i) throws PlaceNotFoundException;
+    public void deleteById(Long i) throws PlaceNotFoundException;
 }

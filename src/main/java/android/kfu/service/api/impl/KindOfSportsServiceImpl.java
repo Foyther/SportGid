@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created by Nurislam on 17.12.2017.
@@ -32,12 +33,17 @@ public class KindOfSportsServiceImpl implements KindOfSportsService {
 
     @Override
     public ArrayList<KindOfSport> getAll() throws KindOfSportNotFoundException{
-        ArrayList<KindOfSport> list= (ArrayList<KindOfSport>) kindOfSportRepository.findAll();
+        ArrayList<KindOfSport> list = (ArrayList<KindOfSport>) kindOfSportRepository.findAll();
         return list;
     }
 
     public void save(KindOfSport kindOfSport){
         kindOfSportRepository.save(kindOfSport);
+    }
+
+    @Override
+    public Set<KindOfSport> getAllByNameIsLike(String name) {
+        return kindOfSportRepository.findAllByNameIsLike(name);
     }
 
 }

@@ -17,6 +17,7 @@ import android.kfu.service.api.auth.AuthService;
 import android.kfu.service.api.exception.InvalidFormException;
 import android.kfu.service.api.UserService;
 import android.kfu.service.api.exception.DeadAccessTokenException;
+import android.kfu.service.api.exception.NotFound.KindOfSportNotFoundException;
 import android.kfu.service.api.exception.NotFound.PlaceNotFoundException;
 import android.kfu.service.api.exception.NotFound.UserNotFoundException;
 import android.kfu.service.api.response.ApiResult;
@@ -110,6 +111,8 @@ public class UserController {
             User user = userService.getByAccessToken(token);
             user.setInterest(debilofkusok(interest));
             userService.save(user);
+        }catch (KindOfSportNotFoundException e){
+            result.setCode(errorCodes.getNotFound());
         } catch (UserNotFoundException e) {
             result.setCode(errorCodes.getPermissionDenied());
         } catch (DeadAccessTokenException e) {

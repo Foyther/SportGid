@@ -12,4 +12,6 @@ import java.util.Set;
  * Created by Nurislam on 17.12.2017.
  */
 @Repository
-public interface KindOfSportRepository extends JpaRepository<KindOfSport, Long> {}
+public interface KindOfSportRepository extends JpaRepository<KindOfSport, Long> {
+    Set<KindOfSport> findAllByNameIsLike(String name);
+}

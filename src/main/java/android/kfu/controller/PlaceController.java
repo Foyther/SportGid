@@ -5,12 +5,10 @@
  */
 package android.kfu.controller;
 
-import android.kfu.entities.KindOfSport;
-import android.kfu.entities.Place;
-import android.kfu.entities.Review;
-import android.kfu.entities.User;
+import android.kfu.entities.*;
 import android.kfu.service.api.*;
 import android.kfu.service.api.exception.DeadAccessTokenException;
+import android.kfu.service.api.exception.NotFound.ComplaintNotFoundException;
 import android.kfu.service.api.exception.NotFound.PlaceNotFoundException;
 import android.kfu.service.api.exception.NotFound.ReviewNotFoundException;
 import android.kfu.service.api.exception.NotFound.UserNotFoundException;
@@ -24,7 +22,6 @@ import java.util.*;
 @RequestMapping(value = "/api/v1/place")
 public class PlaceController {
 
-
     @Autowired
     private ErrorCodes errorCodes;
 
@@ -36,6 +33,9 @@ public class PlaceController {
 
     @Autowired
     private ReviewService reviewService;
+
+    @Autowired
+    private ComplaintService complaintService;
 
     @Autowired
     private KindOfSportsService kindOfSportsService;
@@ -59,21 +59,26 @@ public class PlaceController {
                          String description,
                          String city,
                          String photo,
-                         @RequestParam("sport") List<Long> sport) {
+                         @RequestParam("sport") List<Long> sport,
+                         String token) {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
             Place place = new Place();
-            List<Long> longs = sport;
             place.setSport(debilofkusok(sport));
             place.setAddress(address);
             place.setContact(contact);
             place.setTitle(title);
+            place.setUser(userService.getByAccessToken(token));
             place.setDescription(description);
             place.setCity(city);
             place.setPhoto(photo);
             placeService.save(place);
         } catch (PlaceNotFoundException e) {
-            e.printStackTrace();
+            result.setCode(errorCodes.getNotFound());
+        } catch (UserNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (DeadAccessTokenException e) {
+            result.setCode(errorCodes.getInvalidOrOldAccessToken());
         }
         return result;
     }
@@ -109,6 +114,52 @@ public class PlaceController {
             result.setCode(errorCodes.getInvalidOrOldAccessToken());
         } catch (ReviewNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/{id}/complaint", method = RequestMethod.POST)
+    public ApiResult addComplaint(@PathVariable("id") long id,
+                               String token,
+                               String body) {
+        ApiResult result = new ApiResult(errorCodes.getSuccess());
+        try {
+            User temp = userService.getByAccessToken(token);
+            Place place = placeService.getById(id);
+            Complaint complaint = new Complaint(new Date().getTime(), temp, body, place);
+            Set<Complaint> complaintSet = place.getComplaints();
+            complaintSet.add(complaint);
+            place.setComplaints(complaintSet);
+            complaintService.save(complaint);
+        } catch (ComplaintNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (PlaceNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (UserNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (DeadAccessTokenException e) {
+            result.setCode(errorCodes.getInvalidOrOldAccessToken());
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
+    public ApiResult deletePlace(@PathVariable("id") long id,
+                                 String token) {
+        ApiResult result = new ApiResult(errorCodes.getSuccess());
+        try {
+            User user = userService.getByAccessToken(token);
+            if(user != null){
+                if(user.getId().equals(placeService.getById(id).getUser().getId())) {
+                    placeService.deleteById(id);
+                }
+            }
+        } catch (PlaceNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (UserNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (DeadAccessTokenException e) {
+            result.setCode(errorCodes.getInvalidOrOldAccessToken());
         }
         return result;
     }

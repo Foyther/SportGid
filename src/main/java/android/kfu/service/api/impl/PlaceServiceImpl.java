@@ -17,8 +17,10 @@ import java.util.Set;
 import org.hibernate.InstantiationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+//@Transactional
 public class PlaceServiceImpl implements PlaceService {
 
     @Autowired
@@ -49,40 +51,10 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public void deleteById(int i) throws PlaceNotFoundException {
-        placeRepository.deleteById(i);
+    public void deleteById(Long i) throws PlaceNotFoundException {
+        Place place = placeRepository.findById(i);
+        if(place != null) {
+            placeRepository.delete(i);
+        } else throw new PlaceNotFoundException();
     }
-
-    //    @Override
-//    public PlacesResult getShortInfoPlacesByLocation(String city, User userWhoBrowses) throws IllegalArgumentException{
-//
-//        if (city == null) {
-//            throw new IllegalArgumentException("Country and city must be not null." +
-//                    "Сity = \"" + city + "\"");
-//        }
-//
-//        Set<Place> places = placeRepository.findPlacesByCity(city);
-//
-//        Set<PlaceShortResult> placeShortResults = new HashSet<>();
-//
-//        PlaceShortResult placeShortResult;
-//
-//        if (places != null) {
-//            for (Place place : places) {
-//                if (place != null)  {
-//                        placeShortResult = placeShortResultConverter.convert(userWhoBrowses, place);
-//                        if (placeShortResult != null) {
-//                            placeShortResults.add(placeShortResult);
-//                        }
-//
-//                }
-//            }
-//        }
-//
-//        PlacesResult placesResult = new PlacesResult();
-//        placesResult.setPlaces(placeShortResults);
-//
-//        return placesResult;
-//    }
-
 }
