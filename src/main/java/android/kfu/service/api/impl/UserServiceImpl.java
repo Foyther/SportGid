@@ -28,9 +28,6 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     
     @Autowired
-    private UserTokenRepository userTokenRepository;
-    
-    @Autowired
     private AuthService authService;
     
     @Autowired

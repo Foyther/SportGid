@@ -27,6 +27,9 @@ public class Complaint implements Serializable{
     @Column(name = "body")
     private String body;
 
+    @Column(name = "title")
+    private String title;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "places")
@@ -80,6 +83,14 @@ public class Complaint implements Serializable{
 
     public void setPlace(Place place) {
         this.place = place;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override

@@ -63,6 +63,10 @@ public class User implements Serializable{
 
     @JsonIgnore
     @OneToMany(mappedBy = "avtor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Event> myEvents;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Event> events;
 
     @JsonIgnore
@@ -198,6 +202,13 @@ public class User implements Serializable{
         this.complaint = complaint;
     }
 
+    public Set<Event> getMyEvents() {
+        return myEvents;
+    }
+
+    public void setMyEvents(Set<Event> myEvents) {
+        this.myEvents = myEvents;
+    }
 
     public UserToken getToken() {
         return token;

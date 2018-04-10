@@ -47,7 +47,7 @@ public class Event implements Serializable{
     @JoinColumn(name = "avtor")
     private User avtor;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "events", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<User> members;
 
     @JsonIgnore

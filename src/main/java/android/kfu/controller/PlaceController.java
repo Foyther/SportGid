@@ -83,9 +83,9 @@ public class PlaceController {
         return result;
     }
 
-    private Set<KindOfSport> debilofkusok(List<Long> yaUzheNeChelovek){
+    private Set<KindOfSport> debilofkusok(List<Long> yaUzheNeChelovek) {
         Set<KindOfSport> set = new HashSet<>();
-        for (Long i: yaUzheNeChelovek){
+        for (Long i : yaUzheNeChelovek) {
             set.add(kindOfSportsService.getById(i));
         }
         return set;
@@ -120,13 +120,15 @@ public class PlaceController {
 
     @RequestMapping(value = "/{id}/complaint", method = RequestMethod.POST)
     public ApiResult addComplaint(@PathVariable("id") long id,
-                               String token,
-                               String body) {
+                                  String token,
+                                  String body,
+                                  String title) {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
             User temp = userService.getByAccessToken(token);
             Place place = placeService.getById(id);
             Complaint complaint = new Complaint(new Date().getTime(), temp, body, place);
+            complaint.setTitle(title);
             Set<Complaint> complaintSet = place.getComplaints();
             complaintSet.add(complaint);
             place.setComplaints(complaintSet);
@@ -149,8 +151,8 @@ public class PlaceController {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
             User user = userService.getByAccessToken(token);
-            if(user != null){
-                if(user.getId().equals(placeService.getById(id).getUser().getId())) {
+            if (user != null) {
+                if (user.getId().equals(placeService.getById(id).getUser().getId())) {
                     placeService.deleteById(id);
                 }
             }
@@ -164,11 +166,11 @@ public class PlaceController {
         return result;
     }
 
-    private Place refreshRating(Place place, int i){
-        for(Review review: place.getReviews()){
-            i+=review.getRating();
+    private Place refreshRating(Place place, int i) {
+        for (Review review : place.getReviews()) {
+            i += review.getRating();
         }
-        int rating = i/(place.getReviews().size()+1);
+        int rating = i / (place.getReviews().size() + 1);
         place.setRating(rating);
         return place;
     }

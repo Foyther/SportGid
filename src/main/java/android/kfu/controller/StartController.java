@@ -29,6 +29,11 @@ public class StartController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String sportPlacesByIdAndCity(){
+        addSports("Футбол", "photo");
+        addSports("Баскетбол", "photo");
+        addSports("Волейбол", "photo");
+        addSports("Теннис", "photo");
+        addSports("Бокс", "photo");
         return "New page";
     }
 
@@ -36,5 +41,9 @@ public class StartController {
 //        placeService.deleteById(10l);
 //    }
 
+    public void addSports(String name, String photo){
+        KindOfSport sport = new KindOfSport(name, photo);
+        service.save(sport);
+    }
 }
 

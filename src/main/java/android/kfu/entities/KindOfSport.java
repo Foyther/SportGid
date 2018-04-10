@@ -17,7 +17,7 @@ public class KindOfSport implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @NotNull

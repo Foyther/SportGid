@@ -71,6 +71,7 @@ public class EventController {
             event.setAvtor(userService.getByAccessToken(token));
             event.setPhoto(photo);
             event.setDescription(description);
+            event.setMembers(new HashSet<User>());
 //            Place temp = new Place();
 //            temp.setAddress(address);
 //            temp.setSport(getKindOfSports(sport));
@@ -101,6 +102,27 @@ public class EventController {
                 if(user.getId().equals(eventService.getById(id).getAvtor().getId())) {
                     eventService.deleteById(id);
                 }
+            }
+        } catch (EventNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (UserNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (DeadAccessTokenException e) {
+            result.setCode(errorCodes.getInvalidOrOldAccessToken());
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/{id}/subscribe", method = RequestMethod.POST)
+    public ApiResult subscribe(@PathVariable("id") long id,
+                                 String token) {
+        ApiResult result = new ApiResult(errorCodes.getSuccess());
+        try {
+            User user = userService.getByAccessToken(token);
+            if(user != null){
+                Event event = eventService.getById(id);
+                event.getMembers().add(user);
+                eventService.save(event);
             }
         } catch (EventNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
