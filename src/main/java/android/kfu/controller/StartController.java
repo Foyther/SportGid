@@ -29,11 +29,6 @@ public class StartController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String sportPlacesByIdAndCity(){
-        addSports("Футбол", "photo");
-        addSports("Баскетбол", "photo");
-        addSports("Волейбол", "photo");
-        addSports("Теннис", "photo");
-        addSports("Бокс", "photo");
         return "New page";
     }
 
