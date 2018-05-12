@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -35,6 +36,9 @@ public class Event implements Serializable{
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "map")
+    private Map map;
 
 //    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
@@ -111,6 +115,14 @@ public class Event implements Serializable{
         return description;
     }
 
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
     public String getPhoto() {
         return photo;
     }
@@ -148,6 +160,9 @@ public class Event implements Serializable{
     }
 
     public Set<User> getMembers() {
+        if(members == null){
+            members = new HashSet<>();
+        }
         return members;
     }
 

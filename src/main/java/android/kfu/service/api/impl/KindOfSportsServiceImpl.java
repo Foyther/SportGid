@@ -43,7 +43,7 @@ public class KindOfSportsServiceImpl implements KindOfSportsService {
 
     @Override
     public Set<KindOfSport> getAllByNameIsLike(String name) {
-        return kindOfSportRepository.findAllByNameStartingWith(name);
+        return kindOfSportRepository.findAllByNameContainingIgnoreCase(name);
     }
 
 }

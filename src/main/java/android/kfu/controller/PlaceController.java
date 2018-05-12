@@ -45,6 +45,8 @@ public class PlaceController {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
             Place place = placeService.getById(id);
+            System.out.println("WArniiiiiiinNGGGG ------- " + place.getUser().getEmail());
+            System.out.println("to String ------------ " + place.toString());
             result.setBody(place);
         } catch (PlaceNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
@@ -154,6 +156,38 @@ public class PlaceController {
             if (user != null) {
                 if (user.getId().equals(placeService.getById(id).getUser().getId())) {
                     placeService.deleteById(id);
+                }
+            }
+        } catch (PlaceNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (UserNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (DeadAccessTokenException e) {
+            result.setCode(errorCodes.getInvalidOrOldAccessToken());
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/{id}/book", method = RequestMethod.POST)
+    public ApiResult bookPlace(@PathVariable("id") long id,
+                               String beginDate,
+                               String endDate,
+                               String token
+                               ) {
+        ApiResult result = new ApiResult(errorCodes.getSuccess());
+        try {
+            User user = userService.getByAccessToken(token);
+            Place place = placeService.getById(id);
+            if (user != null) {
+                BookingEntry entry = new BookingEntry();
+                entry.setUser(user);
+                entry.setBeginDate(Long.valueOf(beginDate));
+                entry.setEndDate(Long.valueOf(endDate));
+                if (place.getBookingEntrys() != null) {
+                    Set<BookingEntry> entrySet = place.getBookingEntrys();
+                    entrySet.add(entry);
+                    place.setBookingEntrys(entrySet);
+                    placeService.save(place);
                 }
             }
         } catch (PlaceNotFoundException e) {

@@ -7,6 +7,7 @@ package android.kfu.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
@@ -67,6 +68,7 @@ public class User implements Serializable{
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "events")
     private Set<Event> events;
 
     @JsonIgnore
@@ -74,28 +76,19 @@ public class User implements Serializable{
     private Set<Complaint> complaint;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event")
-    private Event event;
-
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "sports")
     private Set<KindOfSport> interest;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<BookingEntry> bookingEntrys;
 
     @PrePersist
     public void prePersist() {
         if (getGender()== null){
             setGender(Gender.NONE);
         }
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
     }
 
     public Long getId() {
@@ -171,6 +164,9 @@ public class User implements Serializable{
     }
 
     public Set<Event> getEvents() {
+        if(events == null){
+            events = new HashSet<>();
+        }
         return events;
     }
 

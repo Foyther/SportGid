@@ -53,7 +53,7 @@ public class SportController {
         return result;
     }
 
-    //TODO
+    //TODO search by city
     @RequestMapping(value = "/{id}/events", method = RequestMethod.GET)
     public ApiResult sportEventsByIdAndCity(@PathVariable("id") long id,
                                              String city) {

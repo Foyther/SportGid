@@ -121,8 +121,10 @@ public class EventController {
             User user = userService.getByAccessToken(token);
             if(user != null){
                 Event event = eventService.getById(id);
-                event.getMembers().add(user);
-                eventService.save(event);
+                Set<Event> events = user.getEvents();
+                events.add(event);
+                user.setEvents(events);
+                userService.save(user);
             }
         } catch (EventNotFoundException e) {
             result.setCode(errorCodes.getNotFound());

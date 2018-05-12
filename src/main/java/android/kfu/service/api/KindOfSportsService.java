@@ -14,4 +14,5 @@ public interface KindOfSportsService {
     public List<KindOfSport> getAll() throws KindOfSportNotFoundException;
     public void save(KindOfSport kindOfSport);
     public Set<KindOfSport> getAllByNameIsLike(String name);
+
 }

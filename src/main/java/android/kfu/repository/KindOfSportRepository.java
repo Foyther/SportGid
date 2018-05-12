@@ -14,5 +14,5 @@ import java.util.Set;
 @Repository
 public interface KindOfSportRepository extends JpaRepository<KindOfSport, Long> {
     Set<KindOfSport> findAllByNameIsLike(String name);
-    Set<KindOfSport> findAllByNameStartingWith(String name);
+    Set<KindOfSport> findAllByNameContainingIgnoreCase(String name);
 }

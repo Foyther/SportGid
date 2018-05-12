@@ -42,6 +42,9 @@ public class Place implements Serializable{
     @Column(name = "city")
     private String city;
 
+    @Column(name = "map")
+    private Map map;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users")
@@ -62,6 +65,10 @@ public class Place implements Serializable{
     @JsonIgnore
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Complaint> complaints;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<BookingEntry> bookingEntrys;
 
     @Column(name = "contacts")
     private String contact;
@@ -125,6 +132,14 @@ public class Place implements Serializable{
         this.description = description;
     }
 
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
     public String getCity() {
         return city;
     }
@@ -171,6 +186,14 @@ public class Place implements Serializable{
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public Set<BookingEntry> getBookingEntrys() {
+        return bookingEntrys;
+    }
+
+    public void setBookingEntrys(Set<BookingEntry> bookingEntrys) {
+        this.bookingEntrys = bookingEntrys;
     }
 
     @Override

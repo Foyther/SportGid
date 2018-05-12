@@ -28,8 +28,14 @@ public class StartController {
     private KindOfSportsService service;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String sportPlacesByIdAndCity(){
-        return "New page";
+    public String start(){
+//        addSports("Футбол", "photo");
+//        addSports("Баскетбол", "photo");
+//        addSports("Волейбол", "photo");
+//        addSports("Гандбол", "photo");
+//        addSports("Теннис", "photo");
+//        addSports("Пинг-понг", "photo");
+        return "main_menu";
     }
 
 //    public void deletePlaceById(int i) throws PlaceNotFoundException {
