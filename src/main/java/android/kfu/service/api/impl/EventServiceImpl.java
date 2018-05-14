@@ -46,7 +46,12 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public Set<Event> getAllByTitle(KindOfSport sport) throws EventNotFoundException{
+    public Set<Event> getAllBySportAndPriceBetween(KindOfSport sport, int price1, int price2) throws EventNotFoundException{
+        return eventRepository.findAllBySportAndPriceBetween(sport, price1, price2);
+    }
+
+    @Override
+    public Set<Event> getAllBySport(KindOfSport sport) throws EventNotFoundException{
         return eventRepository.findAllBySport(sport);
     }
 

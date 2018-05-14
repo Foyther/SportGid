@@ -61,6 +61,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+
     //TODO
     @Override
     public ProfileResult getPojoById(Long id, boolean showPlaces) throws UserNotFoundException {

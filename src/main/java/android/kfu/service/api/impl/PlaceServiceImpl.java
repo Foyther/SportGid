@@ -42,11 +42,12 @@ public class PlaceServiceImpl implements PlaceService {
     public void save(Place place) throws PlaceNotFoundException {
         if(place != null) {
             placeRepository.save(place);
+            return;
         } else throw new PlaceNotFoundException();
     }
 
     @Override
-    public Set<Place> getAllByTitle(KindOfSport sport, String city) throws PlaceNotFoundException{
+    public Set<Place> getAllBySportAndCity(KindOfSport sport, String city) throws PlaceNotFoundException{
         return placeRepository.findAllBySportAndCity(sport, city);
     }
 

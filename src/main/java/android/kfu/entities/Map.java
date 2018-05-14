@@ -15,10 +15,18 @@ public class Map implements Serializable {
     private Long id;
 
     @Column
-    private int x;
+    private Double x;
 
     @Column
-    private int y;
+    private Double y;
+
+    public Map() {
+    }
+
+    public Map(Double x, Double y) {
+        this.x = x;
+        this.y = y;
+    }
 
     public Long getId() {
         return id;
@@ -28,19 +36,19 @@ public class Map implements Serializable {
         this.id = id;
     }
 
-    public int getX() {
+    public Double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(Double x) {
         this.x = x;
     }
 
-    public int getY() {
+    public Double getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(Double y) {
         this.y = y;
     }
 }

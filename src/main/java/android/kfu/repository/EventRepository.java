@@ -36,4 +36,6 @@ public interface EventRepository extends JpaRepository<Event, Long>{
     Set<Event> findAllBySport(KindOfSport sport);
 
     void deleteEventById(Long id);
+
+    Set<Event> findAllBySportAndPriceBetween(KindOfSport sport, int price1, int price2);
 }

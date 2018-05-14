@@ -6,12 +6,15 @@
 package android.kfu.controller;
 
 import android.kfu.entities.*;
+import android.kfu.entities.Map;
+import android.kfu.service.IsBookedService;
 import android.kfu.service.api.*;
 import android.kfu.service.api.exception.DeadAccessTokenException;
 import android.kfu.service.api.exception.NotFound.ComplaintNotFoundException;
 import android.kfu.service.api.exception.NotFound.PlaceNotFoundException;
 import android.kfu.service.api.exception.NotFound.ReviewNotFoundException;
 import android.kfu.service.api.exception.NotFound.UserNotFoundException;
+import android.kfu.service.api.exception.TimeIsBookedException;
 import android.kfu.service.api.response.ApiResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +43,12 @@ public class PlaceController {
     @Autowired
     private KindOfSportsService kindOfSportsService;
 
+    @Autowired
+    private IsBookedService isBookedService;
+
+    @Autowired
+    private BookingEntryService bookingEntryService;
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ApiResult place(@PathVariable("id") long id) {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
@@ -66,6 +75,41 @@ public class PlaceController {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
             Place place = new Place();
+            place.setSport(debilofkusok(sport));
+            place.setAddress(address);
+            place.setContact(contact);
+            place.setTitle(title);
+            place.setUser(userService.getByAccessToken(token));
+            place.setDescription(description);
+            place.setCity(city);
+            place.setPhoto(photo);
+            placeService.save(place);
+        } catch (PlaceNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (UserNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (DeadAccessTokenException e) {
+            result.setCode(errorCodes.getInvalidOrOldAccessToken());
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/addMap", method = RequestMethod.POST)
+    public ApiResult addNew(String address,
+                            String contact,
+                            String title,
+                            String description,
+                            String city,
+                            String photo,
+                            Double x,
+                            Double y,
+                            @RequestParam("sport") List<Long> sport,
+                            String token) {
+        ApiResult result = new ApiResult(errorCodes.getSuccess());
+        try {
+            Place place = new Place();
+            Map map = new Map(x, y);
+            place.setMap(map);
             place.setSport(debilofkusok(sport));
             place.setAddress(address);
             place.setContact(contact);
@@ -170,31 +214,37 @@ public class PlaceController {
 
     @RequestMapping(value = "/{id}/book", method = RequestMethod.POST)
     public ApiResult bookPlace(@PathVariable("id") long id,
-                               String beginDate,
-                               String endDate,
+                               Long beginDate,
+                               Long endDate,
                                String token
-                               ) {
+    ) {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
             User user = userService.getByAccessToken(token);
             Place place = placeService.getById(id);
             if (user != null) {
-                BookingEntry entry = new BookingEntry();
-                entry.setUser(user);
-                entry.setBeginDate(Long.valueOf(beginDate));
-                entry.setEndDate(Long.valueOf(endDate));
-                if (place.getBookingEntrys() != null) {
-                    Set<BookingEntry> entrySet = place.getBookingEntrys();
-                    entrySet.add(entry);
-                    place.setBookingEntrys(entrySet);
-                    placeService.save(place);
+                Long now = new Date().getTime();
+                if (now < beginDate) {
+                    BookingEntry entry = new BookingEntry();
+                    entry.setUser(user);
+                    entry.setBeginDate(beginDate);
+                    entry.setEndDate(Long.valueOf(endDate));
+                    if (place.getBookingEntrys() != null) {
+                        if (isBookedService.isBooked(place, entry)) {
+                            entry.setPlace(place);
+                            bookingEntryService.save(entry);
+                        }
+                    }//TODO isn't book error
                 }
+                throw new TimeIsBookedException();
             }
         } catch (PlaceNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
         } catch (UserNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
         } catch (DeadAccessTokenException e) {
+            result.setCode(errorCodes.getInvalidOrOldAccessToken());
+        } catch (TimeIsBookedException e) {
             result.setCode(errorCodes.getInvalidOrOldAccessToken());
         }
         return result;

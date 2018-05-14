@@ -18,7 +18,9 @@ public interface EventService {
 
     Set<Event> getAllByTitle(Place place, KindOfSport sport) throws EventNotFoundException;
 
-    Set<Event> getAllByTitle(KindOfSport sport) throws EventNotFoundException;
+    Set<Event> getAllBySportAndPriceBetween(KindOfSport sport, int price1, int price2) throws EventNotFoundException;
+
+    Set<Event> getAllBySport(KindOfSport sport) throws EventNotFoundException;
 
     void deleteById(Long id) throws EventNotFoundException;
 

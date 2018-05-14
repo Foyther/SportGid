@@ -52,6 +52,11 @@ public class ErrorCodesImpl implements ErrorCodes {
     }
 
     @Override
+    public int getTimeIsBooked() {
+        return 8;
+    }
+
+    @Override
     public int getInvalidLoginOrPassword() {
         return 10;
     }

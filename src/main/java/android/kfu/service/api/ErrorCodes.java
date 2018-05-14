@@ -49,6 +49,8 @@ public interface ErrorCodes {
     
     int getInvalidForm();
 
+    int getTimeIsBooked();
+
     /**
      * Created by Nurislam on 18.12.2017.
      */
