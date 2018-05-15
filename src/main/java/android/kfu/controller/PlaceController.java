@@ -75,7 +75,6 @@ public class PlaceController {
                             String title,
                             String description,
                             String city,
-                            int price,
                             String photo,
                             Double x,
                             Double y,
@@ -90,7 +89,6 @@ public class PlaceController {
             place.setAddress(address);
             place.setContact(contact);
             place.setTitle(title);
-            place.setPrice(price);
             place.setUser(userService.getByAccessToken(token));
             place.setDescription(description);
             place.setCity(city);
