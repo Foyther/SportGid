@@ -24,12 +24,10 @@ public class Map implements Serializable {
     @Column
     private Double y;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JsonIgnore
     @OneToMany(mappedBy = "map", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Place> places;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JsonIgnore
     @OneToMany(mappedBy = "map", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Event> events;

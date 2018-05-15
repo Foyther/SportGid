@@ -56,8 +56,7 @@ public class EventController {
         try {
             Event event = eventService.getById(id);
             EventInfoResult result = eventToEventInfoResultConverter.getEventInfoResult(event);
-            boolean teeekashi = isSubscribedService.isSubscribed(event,userService.getByAccessToken(token));
-            result.setSubscribed(teeekashi);
+            result.setSubscribed(isSubscribedService.isSubscribed(event,userService.getByAccessToken(token)));
             apiResult.setBody(result);
         } catch (EventNotFoundException e) {
             apiResult.setCode(errorCodes.getNotFound());
@@ -96,6 +95,7 @@ public class EventController {
                 if (map.getX() == null || map.getY() == null) {
                     throw new PlaceNotFoundException();
                 }
+                mapService.save(map);
 
             } else {
                 Place somePlace = placeService.getById(place);
@@ -151,7 +151,6 @@ public class EventController {
     public ApiResult subscribe(@PathVariable("id") long id,
                                String token) {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
-        EventInfoResult eventInfoResult = new EventInfoResult();
         try {
             User user = userService.getByAccessToken(token);
             if (user != null) {

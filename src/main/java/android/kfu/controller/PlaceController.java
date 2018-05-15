@@ -66,40 +66,10 @@ public class PlaceController {
         return result;
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ApiResult add(String address,
-                         String contact,
-                         String title,
-                         String description,
-                         String city,
-                         String photo,
-                         @RequestParam("sport") List<Long> sport,
-                         String token) {
-        ApiResult result = new ApiResult(errorCodes.getSuccess());
-        try {
-            Place place = new Place();
-            place.setSport(debilofkusok(sport));
-            place.setAddress(address);
-            place.setContact(contact);
-            place.setTitle(title);
-            place.setUser(userService.getByAccessToken(token));
-            place.setDescription(description);
-            place.setCity(city);
-            place.setPhoto(photo);
-            placeService.save(place);
-        } catch (PlaceNotFoundException e) {
-            result.setCode(errorCodes.getNotFound());
-        } catch (UserNotFoundException e) {
-            result.setCode(errorCodes.getNotFound());
-        } catch (DeadAccessTokenException e) {
-            result.setCode(errorCodes.getInvalidOrOldAccessToken());
-        }
-        return result;
-    }
 
 
     //TODO map isn't save to BD
-    @RequestMapping(value = "/addMap", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ApiResult addNew(String address,
                             String contact,
                             String title,
