@@ -7,7 +7,7 @@ package android.kfu.controller;
 
 import android.kfu.entities.*;
 import android.kfu.entities.Map;
-import android.kfu.service.IsBookedService;
+import android.kfu.service.api.checking.IsBookedService;
 import android.kfu.service.api.*;
 import android.kfu.service.api.exception.DeadAccessTokenException;
 import android.kfu.service.api.exception.NotFound.ComplaintNotFoundException;
@@ -33,6 +33,9 @@ public class PlaceController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MapService mapService;
 
     @Autowired
     private ReviewService reviewService;
@@ -94,12 +97,15 @@ public class PlaceController {
         return result;
     }
 
+
+    //TODO map isn't save to BD
     @RequestMapping(value = "/addMap", method = RequestMethod.POST)
     public ApiResult addNew(String address,
                             String contact,
                             String title,
                             String description,
                             String city,
+                            int price,
                             String photo,
                             Double x,
                             Double y,
@@ -109,15 +115,24 @@ public class PlaceController {
         try {
             Place place = new Place();
             Map map = new Map(x, y);
-            place.setMap(map);
+
             place.setSport(debilofkusok(sport));
             place.setAddress(address);
             place.setContact(contact);
             place.setTitle(title);
+            place.setPrice(price);
             place.setUser(userService.getByAccessToken(token));
             place.setDescription(description);
             place.setCity(city);
             place.setPhoto(photo);
+            Map temp = mapService.getByXAndY(x, y);
+            if(temp == null){
+                mapService.save(map);
+            } else{
+                map = temp;
+            }
+            place.setMap(map);
+
             placeService.save(place);
         } catch (PlaceNotFoundException e) {
             result.setCode(errorCodes.getNotFound());

@@ -28,6 +28,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import android.kfu.service.api.response.MyEventsResult;
+import android.kfu.service.api.response.MyPlacesResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -99,6 +101,38 @@ public class UserController {
             result.setBody(user);
         } catch (UserNotFoundException ex) {
             result.setCode(errorCodes.getNotFound());
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/my_events", method = RequestMethod.POST)
+    public ApiResult myEvents(String token) throws UserNotFoundException {
+        ApiResult result = new ApiResult(errorCodes.getSuccess());
+        try {
+            User user = userService.getByAccessToken(token);
+            MyEventsResult eventsResult = new MyEventsResult();
+            eventsResult.setEvents(user.getMyEvents());
+            result.setBody(eventsResult);
+        } catch (UserNotFoundException ex) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (DeadAccessTokenException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/my_places", method = RequestMethod.POST)
+    public ApiResult myPlaces(String token) throws UserNotFoundException {
+        ApiResult result = new ApiResult(errorCodes.getSuccess());
+        try {
+            User user = userService.getByAccessToken(token);
+            MyPlacesResult placesResult = new MyPlacesResult();
+            placesResult.setPlaces(user.getPlaces());
+            result.setBody(placesResult);
+        } catch (UserNotFoundException ex) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (DeadAccessTokenException e) {
+            e.printStackTrace();
         }
         return result;
     }

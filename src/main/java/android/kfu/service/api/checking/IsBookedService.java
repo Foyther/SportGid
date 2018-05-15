@@ -1,4 +1,4 @@
-package android.kfu.service;
+package android.kfu.service.api.checking;
 
 import android.kfu.entities.BookingEntry;
 import android.kfu.entities.Place;

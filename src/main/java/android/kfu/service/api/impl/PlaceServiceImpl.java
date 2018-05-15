@@ -10,14 +10,11 @@ import android.kfu.entities.Place;
 import android.kfu.repository.PlaceRepository;
 import android.kfu.service.api.PlaceService;
 import android.kfu.service.api.exception.NotFound.PlaceNotFoundException;
-import android.kfu.tools.PlaceToPlaceShortResultConverter;
 
 import java.util.Set;
 
-import org.hibernate.InstantiationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 //@Transactional

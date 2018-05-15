@@ -37,9 +37,6 @@ public class Event implements Serializable{
     @Column(name = "description")
     private String description;
 
-    @Column(name = "map")
-    private Map map;
-
 //    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "places")
@@ -58,6 +55,11 @@ public class Event implements Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sports")
     private KindOfSport sport;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "maps")
+    private Map map;
 
     @JsonIgnore
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -36,13 +36,19 @@ public class Place implements Serializable{
     @Column(name = "address")
     private String address;
 
+    @Column(name = "price")
+    private int price;
+
     @Column(name = "photo", length = 1000)
     private String photo;
 
     @Column(name = "city")
     private String city;
 
-    @Column(name = "map")
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "maps")
     private Map map;
 
     @JsonIgnore
@@ -90,6 +96,14 @@ public class Place implements Serializable{
 
     public void setSport(Set<KindOfSport> sport) {
         this.sport = sport;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public Set<Event> getEvents() {

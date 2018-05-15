@@ -9,14 +9,12 @@ import android.kfu.entities.User;
 import android.kfu.form.EditProfileForm;
 import android.kfu.form.validator.EditProfileFormValidator;
 import android.kfu.repository.UserRepository;
-import android.kfu.repository.UserTokenRepository;
 import android.kfu.service.Crypter;
 import android.kfu.service.api.exception.InvalidFormException;
 import android.kfu.service.api.UserService;
 import android.kfu.service.api.auth.AuthService;
 import android.kfu.service.api.exception.DeadAccessTokenException;
 import android.kfu.service.api.exception.NotFound.UserNotFoundException;
-import android.kfu.service.api.response.ProfileResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +52,7 @@ public class UserServiceImpl implements UserService {
         if (accessToken == null) {
             throw  new DeadAccessTokenException();
         }
-        User user = userRepository.findAllByToken(accessToken);
+        User user = userRepository.findOneByToken(accessToken);
         if(user == null){
             throw new UserNotFoundException();
         }
@@ -62,53 +60,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    //TODO
-    @Override
-    public ProfileResult getPojoById(Long id, boolean showPlaces) throws UserNotFoundException {
-        User user = userRepository.findOne(id);
-        return null;
-    }
-
-    @Override
-    public ProfileResult getPojoByAccessToken(String accessToken) throws DeadAccessTokenException, UserNotFoundException {
-        return null;
-    }
-
-    //TODO
-    //TODO
-
-//    @Override
-//    public ProfileResult getPojoByAccessToken(String accessToken) throws DeadAccessTokenException, UserNotFoundException {
-//        if (authService.isAccessTokenActive(accessToken)) {
-//            UserToken userToken = userTokenRepository.findOneByAccessToken(accessToken);
-//            if (userToken != null) {
-//
-//                User user = userToken.getUser();
-//
-//                if (user != null) {
-//
-//                    ProfileResult profileResult = userToProfileResultConverter.convert(user, true, true, false);
-//
-//                    if (profileResult != null) {
-//
-//                        return profileResult;
-//
-//                    } else {
-//                        throw new UserNotFoundException();
-//                    }
-//
-//                } else {
-//                    throw new UserNotFoundException();
-//                }
-//
-//            } else {
-//                throw new DeadAccessTokenException();
-//            }
-//        } else {
-//            throw new DeadAccessTokenException();
-//        }
-//
-//    }
 
     @Override
     public void editUser(String accessToken, EditProfileForm editProfileForm) 

@@ -1,18 +1,19 @@
 package android.kfu.controller;
 
-import android.kfu.entities.Event;
-import android.kfu.entities.KindOfSport;
-import android.kfu.entities.Place;
-import android.kfu.entities.User;
+import android.kfu.entities.*;
 import android.kfu.service.api.*;
+import android.kfu.service.api.checking.IsSubscribedService;
+import android.kfu.service.api.converter.EventToEventInfoResultConverter;
 import android.kfu.service.api.exception.DeadAccessTokenException;
 import android.kfu.service.api.exception.NotFound.EventNotFoundException;
 import android.kfu.service.api.exception.NotFound.PlaceNotFoundException;
 import android.kfu.service.api.exception.NotFound.UserNotFoundException;
 import android.kfu.service.api.response.ApiResult;
+import android.kfu.service.api.response.EventInfoResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.HeaderParam;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,25 +35,40 @@ public class EventController {
     private PlaceService placeService;
 
     @Autowired
+    private MapService mapService;
+
+    @Autowired
+    private IsSubscribedService isSubscribedService;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
     private KindOfSportsService kindOfSportsService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ApiResult event(@PathVariable("id") long id) {
+    @Autowired
+    private EventToEventInfoResultConverter eventToEventInfoResultConverter;
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    public ApiResult event(@PathVariable("id") long id,
+                           String token) {
         ApiResult apiResult = new ApiResult(errorCodes.getSuccess());
         try {
             Event event = eventService.getById(id);
-            eventService.save(event);
-            apiResult.setBody(event);
+            EventInfoResult result = eventToEventInfoResultConverter.getEventInfoResult(event);
+            boolean teeekashi = isSubscribedService.isSubscribed(event,userService.getByAccessToken(token));
+            result.setSubscribed(teeekashi);
+            apiResult.setBody(result);
         } catch (EventNotFoundException e) {
             apiResult.setCode(errorCodes.getNotFound());
+        } catch (UserNotFoundException e) {
+            apiResult.setCode(errorCodes.getNotFound());
+        } catch (DeadAccessTokenException e) {
+            e.printStackTrace();
         }
         return apiResult;
     }
 
-    //TODO add Place
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ApiResult add(String price,
                          String title,
@@ -60,7 +76,9 @@ public class EventController {
                          String token,
                          String photo,
                          String description,
-                         String address,
+                         Double x,
+                         Double y,
+                         Long place,
                          Long sport) {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
@@ -72,6 +90,22 @@ public class EventController {
             event.setPhoto(photo);
             event.setDescription(description);
             event.setMembers(new HashSet<User>());
+            Map map = new Map();
+            if (place == null) {
+                map = new Map(x, y);
+                if (map.getX() == null || map.getY() == null) {
+                    throw new PlaceNotFoundException();
+                }
+
+            } else {
+                Place somePlace = placeService.getById(place);
+                event.setPlace(somePlace);
+                if (place != null) {
+                    Long id = somePlace.getMap().getId();
+                    map = mapService.getById(id);
+                }
+            }
+            event.setMap(map);
 //            Place temp = new Place();
 //            temp.setAddress(address);
 //            temp.setSport(getKindOfSports(sport));
@@ -85,8 +119,8 @@ public class EventController {
             result.setCode(errorCodes.getNotFound());
         } catch (DeadAccessTokenException e) {
             result.setCode(errorCodes.getInvalidOrOldAccessToken());
-//        } catch (PlaceNotFoundException e) {
-//            e.printStackTrace();
+        } catch (PlaceNotFoundException e) {
+            e.printStackTrace();
         }
         return result;
     }
@@ -98,8 +132,8 @@ public class EventController {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
             User user = userService.getByAccessToken(token);
-            if(user != null){
-                if(user.getId().equals(eventService.getById(id).getAvtor().getId())) {
+            if (user != null) {
+                if (user.getId().equals(eventService.getById(id).getAvtor().getId())) {
                     eventService.deleteById(id);
                 }
             }
@@ -115,16 +149,19 @@ public class EventController {
 
     @RequestMapping(value = "/{id}/subscribe", method = RequestMethod.POST)
     public ApiResult subscribe(@PathVariable("id") long id,
-                                 String token) {
+                               String token) {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
+        EventInfoResult eventInfoResult = new EventInfoResult();
         try {
             User user = userService.getByAccessToken(token);
-            if(user != null){
+            if (user != null) {
                 Event event = eventService.getById(id);
-                Set<Event> events = user.getEvents();
-                events.add(event);
-                user.setEvents(events);
-                userService.save(user);
+                if (isSubscribedService.isSubscribed(event, user)) {
+                    Set<Event> events = user.getEvents();
+                    events.add(event);
+                    user.setEvents(events);
+                    userService.save(user);
+                }
             }
         } catch (EventNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
@@ -136,17 +173,18 @@ public class EventController {
         return result;
     }
 
-    public Set<KindOfSport> getKindOfSports(Long i){
+    private Set<KindOfSport> getKindOfSports(Long i) {
         List<Long> longSet = new LinkedList<>();
         longSet.add(i);
         return debilofkusok(longSet);
     }
 
-    private Set<KindOfSport> debilofkusok(List<Long> yaUzheNeChelovek){
+    private Set<KindOfSport> debilofkusok(List<Long> yaUzheNeChelovek) {
         Set<KindOfSport> set = new HashSet<>();
-        for (Long i: yaUzheNeChelovek){
+        for (Long i : yaUzheNeChelovek) {
             set.add(kindOfSportsService.getById(i));
         }
         return set;
     }
+
 }

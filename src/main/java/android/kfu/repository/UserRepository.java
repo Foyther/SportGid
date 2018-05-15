@@ -23,5 +23,5 @@ public interface UserRepository extends JpaRepository<User, Long>{
     User findOneById(Long id);
 
     @Query(value = "SELECT * from users WHERE id = (select user_tokens.user_id from user_tokens WHERE access_token = ?1)",nativeQuery = true)
-    User findAllByToken(String token);
+    User findOneByToken(String token);
 }
