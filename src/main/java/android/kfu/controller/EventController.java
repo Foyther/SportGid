@@ -107,11 +107,6 @@ public class EventController {
                 }
             }
             event.setMap(map);
-//            Place temp = new Place();
-//            temp.setAddress(address);
-//            temp.setSport(getKindOfSports(sport));
-//            placeService.save(temp);
-//            event.setPlace(temp);
             event.setSport(kindOfSportsService.getById(sport));
             eventService.save(event);
         } catch (NumberFormatException ex) {
@@ -121,7 +116,7 @@ public class EventController {
         } catch (DeadAccessTokenException e) {
             result.setCode(errorCodes.getInvalidOrOldAccessToken());
         } catch (PlaceNotFoundException e) {
-            e.printStackTrace();
+            result.setCode(errorCodes.getNotFound());
         }
         return result;
     }
@@ -152,13 +147,48 @@ public class EventController {
     //TODO
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.POST)
     public ApiResult editEvent(@PathVariable("id") long id,
-                                 String token) {
+                               String price,
+                               String title,
+                               String maxOfMembers,
+                               String token,
+                               String photo,
+                               String description,
+                               Double x,
+                               Double y,
+                               Long place,
+                               Long sport) {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
             User user = userService.getByAccessToken(token);
             if (user != null) {
                 if (user.getId().equals(eventService.getById(id).getAvtor().getId())) {
-                    eventService.deleteById(id);
+                    Event event = eventService.getById(id);
+                    event.setPrice(Integer.valueOf(price));
+                    event.setTitle(title);
+                    event.setMaxOfMembers(Integer.valueOf(maxOfMembers));
+                    event.setAvtor(userService.getByAccessToken(token));
+                    event.setPhoto(photo);
+                    event.setDescription(description);
+                    event.setMembers(new HashSet<User>());
+                    Map map = new Map();
+                    if (place == null) {
+                        map = new Map(x, y);
+                        if (map.getX() == null || map.getY() == null) {
+                            throw new PlaceNotFoundException();
+                        }
+                        mapService.save(map);
+
+                    } else {
+                        Place somePlace = placeService.getById(place);
+                        event.setPlace(somePlace);
+                        if (place != null) {
+                            Long idMap = somePlace.getMap().getId();
+                            map = mapService.getById(idMap);
+                        }
+                    }
+                    event.setMap(map);
+                    event.setSport(kindOfSportsService.getById(sport));
+                    eventService.save(event);
                 } else throw new AccessDeniedException();
             }
         } catch (EventNotFoundException e) {
@@ -169,6 +199,8 @@ public class EventController {
             result.setCode(errorCodes.getInvalidOrOldAccessToken());
         } catch (AccessDeniedException e) {
             result.setCode(errorCodes.getPermissionDenied());
+        } catch (PlaceNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
         }
         return result;
     }
@@ -182,7 +214,8 @@ public class EventController {
             if (user != null) {
                 Event event = eventService.getById(id);
                 if (event != null) {
-                    if (!isSubscribedService.isSubscribed(event, user)) {
+                    if (!isSubscribedService.isSubscribed(event, user) &&
+                            event.getMaxOfMembers() > event.getMembers().size()) {
                         Set<Event> events = user.getEvents();
                         events.add(event);
                         user.setEvents(events);

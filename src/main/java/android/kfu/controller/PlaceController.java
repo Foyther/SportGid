@@ -70,8 +70,6 @@ public class PlaceController {
     }
 
 
-
-    //TODO map isn't save to BD
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ApiResult addNew(String address,
                             String contact,
@@ -202,13 +200,42 @@ public class PlaceController {
 
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.POST)
     public ApiResult editPlace(@PathVariable("id") long id,
-                                 String token) {
+                               String token,
+                               String address,
+                               String contact,
+                               String title,
+                               String description,
+                               String city,
+                               String photo,
+                               Double x,
+                               Double y,
+                               @RequestParam("sport") List<Long> sport
+                               ) {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
             User user = userService.getByAccessToken(token);
             if (user != null) {
                 if (user.getId().equals(placeService.getById(id).getUser().getId())) {
-                    placeService.deleteById(id);
+                    Place place = placeService.getById(id);
+                    Map map = new Map(x, y);
+
+                    place.setSport(debilofkusok(sport));
+                    place.setAddress(address);
+                    place.setContact(contact);
+                    place.setTitle(title);
+                    place.setUser(userService.getByAccessToken(token));
+                    place.setDescription(description);
+                    place.setCity(city);
+                    place.setPhoto(photo);
+                    Map temp = mapService.getByXAndY(x, y);
+                    if(temp == null){
+                        mapService.save(map);
+                    } else{
+                        map = temp;
+                    }
+                    place.setMap(map);
+
+                    placeService.save(place);
                 } else throw new AccessDeniedException();
             }
         } catch (PlaceNotFoundException e) {
