@@ -200,6 +200,29 @@ public class PlaceController {
         return result;
     }
 
+    @RequestMapping(value = "/{id}/edit", method = RequestMethod.POST)
+    public ApiResult editPlace(@PathVariable("id") long id,
+                                 String token) {
+        ApiResult result = new ApiResult(errorCodes.getSuccess());
+        try {
+            User user = userService.getByAccessToken(token);
+            if (user != null) {
+                if (user.getId().equals(placeService.getById(id).getUser().getId())) {
+                    placeService.deleteById(id);
+                } else throw new AccessDeniedException();
+            }
+        } catch (PlaceNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (UserNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (DeadAccessTokenException e) {
+            result.setCode(errorCodes.getInvalidOrOldAccessToken());
+        } catch (AccessDeniedException e) {
+            result.setCode(errorCodes.getPermissionDenied());
+        }
+        return result;
+    }
+
     @RequestMapping(value = "/{id}/book", method = RequestMethod.POST)
     public ApiResult bookPlace(@PathVariable("id") long id,
                                Long beginDate,

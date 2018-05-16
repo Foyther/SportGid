@@ -149,6 +149,30 @@ public class EventController {
         return result;
     }
 
+    //TODO
+    @RequestMapping(value = "/{id}/edit", method = RequestMethod.POST)
+    public ApiResult editEvent(@PathVariable("id") long id,
+                                 String token) {
+        ApiResult result = new ApiResult(errorCodes.getSuccess());
+        try {
+            User user = userService.getByAccessToken(token);
+            if (user != null) {
+                if (user.getId().equals(eventService.getById(id).getAvtor().getId())) {
+                    eventService.deleteById(id);
+                } else throw new AccessDeniedException();
+            }
+        } catch (EventNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (UserNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (DeadAccessTokenException e) {
+            result.setCode(errorCodes.getInvalidOrOldAccessToken());
+        } catch (AccessDeniedException e) {
+            result.setCode(errorCodes.getPermissionDenied());
+        }
+        return result;
+    }
+
     @RequestMapping(value = "/{id}/subscribe", method = RequestMethod.POST)
     public ApiResult subscribe(@PathVariable("id") long id,
                                String token) {

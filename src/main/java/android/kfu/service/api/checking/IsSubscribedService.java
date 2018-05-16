@@ -20,7 +20,7 @@ public class IsSubscribedService {
                     }
                 }
             } else return false;
-        }
-        throw new UserNotFoundException();
+        } else throw new UserNotFoundException();
+        return false;
     }
 }
