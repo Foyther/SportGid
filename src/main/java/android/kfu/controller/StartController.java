@@ -29,12 +29,12 @@ public class StartController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String start(){
-        addSports("Футбол", "photo");
-        addSports("Баскетбол", "photo");
-        addSports("Волейбол", "photo");
-        addSports("Гандбол", "photo");
-        addSports("Теннис", "photo");
-        addSports("Пинг-понг", "photo");
+//        addSports("Футбол", "photo");
+//        addSports("Баскетбол", "photo");
+//        addSports("Волейбол", "photo");
+//        addSports("Гандбол", "photo");
+//        addSports("Теннис", "photo");
+//        addSports("Пинг-понг", "photo");
         return "main_menu";
     }
 
