@@ -35,7 +35,9 @@ public class EventToEventInfoResultConverterConverterImpl implements EventToEven
         temp.setPrice(event.getPrice());
         temp.setRating(event.getRating());
         temp.setMap(event.getMap().getId());
-        temp.setPlace(event.getPlace().getId());
+        if(event.getPlace() != null){
+            temp.setPlace(event.getPlace().getId());
+        }
         temp.setReviews(event.getReviews());
         return temp;
     }

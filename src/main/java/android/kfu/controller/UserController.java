@@ -49,7 +49,7 @@ public class UserController {
     @Autowired
     private KindOfSportsService kindOfSportsService;
 
-    @RequestMapping(value = "/profile")
+    @RequestMapping(value = "/profile", method = RequestMethod.POST)
     public ApiResult profile(String token) {
 
         ApiResult result = new ApiResult(errorCodes.getSuccess());
@@ -71,7 +71,7 @@ public class UserController {
         return result;
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.POST)
+    @RequestMapping(value = "/change_city", method = RequestMethod.POST)
     public ApiResult editProfile(String token,
                                  String city) {
 

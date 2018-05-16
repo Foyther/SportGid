@@ -4,6 +4,7 @@ import android.kfu.entities.*;
 import android.kfu.service.api.*;
 import android.kfu.service.api.checking.IsSubscribedService;
 import android.kfu.service.api.converter.EventToEventInfoResultConverter;
+import android.kfu.service.api.exception.AccessDeniedException;
 import android.kfu.service.api.exception.DeadAccessTokenException;
 import android.kfu.service.api.exception.NotFound.EventNotFoundException;
 import android.kfu.service.api.exception.NotFound.PlaceNotFoundException;
@@ -56,7 +57,7 @@ public class EventController {
         try {
             Event event = eventService.getById(id);
             EventInfoResult result = eventToEventInfoResultConverter.getEventInfoResult(event);
-            result.setSubscribed(isSubscribedService.isSubscribed(event,userService.getByAccessToken(token)));
+            result.setSubscribed(isSubscribedService.isSubscribed(event, userService.getByAccessToken(token)));
             apiResult.setBody(result);
         } catch (EventNotFoundException e) {
             apiResult.setCode(errorCodes.getNotFound());
@@ -125,7 +126,6 @@ public class EventController {
         return result;
     }
 
-    //TODO string token
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
     public ApiResult deletePlace(@PathVariable("id") long id,
                                  String token) {
@@ -135,7 +135,7 @@ public class EventController {
             if (user != null) {
                 if (user.getId().equals(eventService.getById(id).getAvtor().getId())) {
                     eventService.deleteById(id);
-                }
+                } else throw new AccessDeniedException();
             }
         } catch (EventNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
@@ -143,6 +143,8 @@ public class EventController {
             result.setCode(errorCodes.getNotFound());
         } catch (DeadAccessTokenException e) {
             result.setCode(errorCodes.getInvalidOrOldAccessToken());
+        } catch (AccessDeniedException e) {
+            result.setCode(errorCodes.getPermissionDenied());
         }
         return result;
     }
@@ -155,12 +157,14 @@ public class EventController {
             User user = userService.getByAccessToken(token);
             if (user != null) {
                 Event event = eventService.getById(id);
-                if (isSubscribedService.isSubscribed(event, user)) {
-                    Set<Event> events = user.getEvents();
-                    events.add(event);
-                    user.setEvents(events);
-                    userService.save(user);
-                }
+                if (event != null) {
+                    if (!isSubscribedService.isSubscribed(event, user)) {
+                        Set<Event> events = user.getEvents();
+                        events.add(event);
+                        user.setEvents(events);
+                        userService.save(user);
+                    } else throw new AccessDeniedException();
+                } else throw new EventNotFoundException();
             }
         } catch (EventNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
@@ -168,6 +172,37 @@ public class EventController {
             result.setCode(errorCodes.getNotFound());
         } catch (DeadAccessTokenException e) {
             result.setCode(errorCodes.getInvalidOrOldAccessToken());
+        } catch (AccessDeniedException e) {
+            result.setCode(errorCodes.getPermissionDenied());
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/{id}/unsubscribe", method = RequestMethod.POST)
+    public ApiResult unsubscribe(@PathVariable("id") long id,
+                                 String token) {
+        ApiResult result = new ApiResult(errorCodes.getSuccess());
+        try {
+            User user = userService.getByAccessToken(token);
+            if (user != null) {
+                Event event = eventService.getById(id);
+                if(event != null) {
+                    if (isSubscribedService.isSubscribed(event, user)) {
+                        Set<Event> events = user.getEvents();
+                        events.remove(event);
+                        user.setEvents(events);
+                        userService.save(user);
+                    } else throw new AccessDeniedException();
+                } else throw new EventNotFoundException();
+            }
+        } catch (EventNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (UserNotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (DeadAccessTokenException e) {
+            result.setCode(errorCodes.getInvalidOrOldAccessToken());
+        } catch (AccessDeniedException e) {
+            result.setCode(errorCodes.getPermissionDenied());
         }
         return result;
     }

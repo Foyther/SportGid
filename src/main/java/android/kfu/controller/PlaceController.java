@@ -9,6 +9,7 @@ import android.kfu.entities.*;
 import android.kfu.entities.Map;
 import android.kfu.service.api.checking.IsBookedService;
 import android.kfu.service.api.*;
+import android.kfu.service.api.exception.AccessDeniedException;
 import android.kfu.service.api.exception.DeadAccessTokenException;
 import android.kfu.service.api.exception.NotFound.ComplaintNotFoundException;
 import android.kfu.service.api.exception.NotFound.PlaceNotFoundException;
@@ -16,7 +17,9 @@ import android.kfu.service.api.exception.NotFound.ReviewNotFoundException;
 import android.kfu.service.api.exception.NotFound.UserNotFoundException;
 import android.kfu.service.api.exception.TimeIsBookedException;
 import android.kfu.service.api.response.ApiResult;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -183,7 +186,7 @@ public class PlaceController {
             if (user != null) {
                 if (user.getId().equals(placeService.getById(id).getUser().getId())) {
                     placeService.deleteById(id);
-                }
+                } else throw new AccessDeniedException();
             }
         } catch (PlaceNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
@@ -191,6 +194,8 @@ public class PlaceController {
             result.setCode(errorCodes.getNotFound());
         } catch (DeadAccessTokenException e) {
             result.setCode(errorCodes.getInvalidOrOldAccessToken());
+        } catch (AccessDeniedException e) {
+            result.setCode(errorCodes.getPermissionDenied());
         }
         return result;
     }
@@ -216,10 +221,9 @@ public class PlaceController {
                         if (isBookedService.isBooked(place, entry)) {
                             entry.setPlace(place);
                             bookingEntryService.save(entry);
-                        }
-                    }//TODO isn't book error
-                }
-                throw new TimeIsBookedException();
+                        } else throw new AccessDeniedException();
+                    } else throw new NotFoundException("Haha");
+                } else throw new TimeIsBookedException();
             }
         } catch (PlaceNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
@@ -228,7 +232,11 @@ public class PlaceController {
         } catch (DeadAccessTokenException e) {
             result.setCode(errorCodes.getInvalidOrOldAccessToken());
         } catch (TimeIsBookedException e) {
-            result.setCode(errorCodes.getInvalidOrOldAccessToken());
+            result.setCode(errorCodes.getTimeIsBooked());
+        } catch (NotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        } catch (AccessDeniedException e) {
+            result.setCode(errorCodes.getPermissionDenied());
         }
         return result;
     }
