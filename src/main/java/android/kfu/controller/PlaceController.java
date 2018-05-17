@@ -9,6 +9,7 @@ import android.kfu.entities.*;
 import android.kfu.entities.Map;
 import android.kfu.service.api.checking.IsBookedService;
 import android.kfu.service.api.*;
+import android.kfu.service.api.converter.PlaceToPlaceInfoResultConverter;
 import android.kfu.service.api.exception.AccessDeniedException;
 import android.kfu.service.api.exception.DeadAccessTokenException;
 import android.kfu.service.api.exception.NotFound.ComplaintNotFoundException;
@@ -55,14 +56,15 @@ public class PlaceController {
     @Autowired
     private BookingEntryService bookingEntryService;
 
+    @Autowired
+    private PlaceToPlaceInfoResultConverter placeToPlaceInfoResultConverter;
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ApiResult place(@PathVariable("id") long id) {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
             Place place = placeService.getById(id);
-            System.out.println("WArniiiiiiinNGGGG ------- " + place.getUser().getEmail());
-            System.out.println("to String ------------ " + place.toString());
-            result.setBody(place);
+            result.setBody(placeToPlaceInfoResultConverter.getPlaceInfoResult(place));
         } catch (PlaceNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
         }
