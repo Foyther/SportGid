@@ -22,7 +22,7 @@ public class Event implements Serializable{
     @Column(name = "title")
     private String title;
 
-    @Column(name = "photo")
+    @Column(name = "photo", length = 1000)
     private String photo;
 
     @Column(name = "rating")

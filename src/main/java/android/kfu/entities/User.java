@@ -45,7 +45,7 @@ public class User implements Serializable{
     @Column(name = "city")
     private String city;
 
-    @Column(name = "avatar")
+    @Column(name = "avatar", length = 1000)
     private String avatar;
 
     @Column(name = "gender")
