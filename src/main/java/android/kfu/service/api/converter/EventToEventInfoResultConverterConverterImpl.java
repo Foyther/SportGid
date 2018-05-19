@@ -39,6 +39,7 @@ public class EventToEventInfoResultConverterConverterImpl implements EventToEven
             temp.setPlace(event.getPlace().getId());
         }
         temp.setReviews(event.getReviews());
+        temp.setSport(event.getSport().getId());
         return temp;
     }
 

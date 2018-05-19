@@ -34,7 +34,7 @@ public class EventInfoResult implements Serializable {
 
     private Long place;
 
-    private Set<Long> sport;
+    private Long sport;
 
     private UserShortResult avtor;
 
@@ -72,11 +72,11 @@ public class EventInfoResult implements Serializable {
         this.photo = photo;
     }
 
-    public Set<Long> getSport() {
+    public Long getSport() {
         return sport;
     }
 
-    public void setSport(Set<Long> sport) {
+    public void setSport(Long sport) {
         this.sport = sport;
     }
 

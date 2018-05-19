@@ -10,13 +10,16 @@ import java.util.Set;
  */
 public class MyEventsResult implements Serializable {
 
-    private Set<Event> events;
+    private Set<EventInfoResult> events;
 
-    public Set<Event> getEvents() {
+    public MyEventsResult() {
+    }
+
+    public Set<EventInfoResult> getEvents() {
         return events;
     }
 
-    public void setEvents(Set<Event> events) {
+    public void setEvents(Set<EventInfoResult> events) {
         this.events = events;
     }
 }
