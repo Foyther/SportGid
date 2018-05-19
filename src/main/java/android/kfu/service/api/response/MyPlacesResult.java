@@ -10,13 +10,16 @@ import java.util.Set;
  */
 public class MyPlacesResult implements Serializable {
 
-    private Set<Place> places;
+    private Set<PlaceInfoResult> places;
 
-    public Set<Place> getPlaces() {
+    public MyPlacesResult() {
+    }
+
+    public Set<PlaceInfoResult> getPlaces() {
         return places;
     }
 
-    public void setPlaces(Set<Place> places) {
+    public void setPlaces(Set<PlaceInfoResult> places) {
         this.places = places;
     }
 }

@@ -16,6 +16,7 @@ import android.kfu.service.api.KindOfSportsService;
 import android.kfu.service.api.UserTokenService;
 import android.kfu.service.api.auth.AuthService;
 import android.kfu.service.api.converter.EventToEventInfoResultConverter;
+import android.kfu.service.api.converter.PlaceToPlaceInfoResultConverter;
 import android.kfu.service.api.exception.InvalidFormException;
 import android.kfu.service.api.UserService;
 import android.kfu.service.api.exception.DeadAccessTokenException;
@@ -23,7 +24,7 @@ import android.kfu.service.api.exception.NotFound.EventNotFoundException;
 import android.kfu.service.api.exception.NotFound.KindOfSportNotFoundException;
 import android.kfu.service.api.exception.NotFound.PlaceNotFoundException;
 import android.kfu.service.api.exception.NotFound.UserNotFoundException;
-import android.kfu.service.api.response.ApiResult;
+import android.kfu.service.api.response.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -31,9 +32,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import android.kfu.service.api.response.EventInfoResult;
-import android.kfu.service.api.response.MyEventsResult;
-import android.kfu.service.api.response.MyPlacesResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,6 +53,9 @@ public class UserController {
 
     @Autowired
     private EventToEventInfoResultConverter eventToEventInfoResultConverter;
+
+    @Autowired
+    private PlaceToPlaceInfoResultConverter placeToPlaceInfoResultConverter;
 
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
     public ApiResult profile(String token) {
@@ -134,9 +135,9 @@ public class UserController {
         try {
             User user = userService.getByAccessToken(token);
             MyPlacesResult placesResult = new MyPlacesResult();
-            placesResult.setPlaces(user.getPlaces());
+            placesResult.setPlaces(getSetPlace(user.getPlaces()));
             result.setBody(placesResult);
-        } catch (UserNotFoundException ex) {
+        } catch (UserNotFoundException | PlaceNotFoundException ex) {
             result.setCode(errorCodes.getNotFound());
         } catch (DeadAccessTokenException e) {
             e.printStackTrace();
@@ -177,6 +178,17 @@ public class UserController {
         Set<EventInfoResult> results = new HashSet<>();
         for(Event event: events){
             results.add(eventToEventInfoResultConverter.getEventInfoResult(event));
+        }
+        return results;
+    }
+
+    private Set<PlaceInfoResult> getSetPlace(Set<Place> places) throws PlaceNotFoundException {
+        if(places == null){
+            throw new PlaceNotFoundException();
+        }
+        Set<PlaceInfoResult> results = new HashSet<>();
+        for(Place place: places){
+            results.add(placeToPlaceInfoResultConverter.getPlaceInfoResult(place));
         }
         return results;
     }
