@@ -27,7 +27,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 @EnableJpaRepositories(basePackages = {"android.kfu.repository"})
 @ComponentScan(basePackages = {"android.kfu.entities"})
 @PropertySource({"classpath:/application.properties"})
-@Import({ToolConfig.class, ValidatorConfig.class, ServiceConfig.class})
+@Import({ToolConfig.class, ValidatorConfig.class, ServiceConfig.class, WebConfig.class})
 public class RootConfig {
     @Autowired
     private Environment env;

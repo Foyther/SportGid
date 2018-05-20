@@ -5,10 +5,10 @@
  */
 package android.kfu.service.api;
 
+import android.kfu.form.EditProfileForm;
 import android.kfu.service.api.exception.InvalidFormException;
 import android.kfu.service.api.exception.NotFound.UserNotFoundException;
 import android.kfu.entities.User;
-import android.kfu.form.EditProfileForm;
 import android.kfu.service.api.exception.DeadAccessTokenException;
 
 public interface UserService {
@@ -17,6 +17,8 @@ public interface UserService {
     
     User getByAccessToken(String accessToken) throws DeadAccessTokenException, UserNotFoundException;
 
-    void editUser(String accessToken, EditProfileForm editProfileForm) throws DeadAccessTokenException, UserNotFoundException, InvalidFormException;
+    void editUser(String accessToken, EditProfileForm editProfileForm)
+            throws DeadAccessTokenException, UserNotFoundException, InvalidFormException;
+
     void save(User user) throws UserNotFoundException;
 }

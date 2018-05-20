@@ -7,6 +7,8 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Nurislam on 14.05.2018.
  */
@@ -31,4 +33,15 @@ public class MapServiceImpl implements MapService {
     public Map getById(Long id) {
         return repository.findOne(id);
     }
+
+    @Override
+    public List<Map> getByListId(List<Long> mapLongs) throws NotFoundException {
+        List<Map> maps = null;
+        if(mapLongs != null){
+           maps = repository.findByIdIn(mapLongs);
+        } else throw new NotFoundException("Map not found");
+        return maps;
+    }
+
+
 }

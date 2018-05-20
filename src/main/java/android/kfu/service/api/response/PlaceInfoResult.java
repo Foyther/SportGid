@@ -2,6 +2,7 @@ package android.kfu.service.api.response;
 
 import android.kfu.entities.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,6 +26,8 @@ public class PlaceInfoResult {
     private String contact;
     private Set<Long> sport;
     private Set<ReviewResult> reviews;
+
+    @JsonProperty(value = "booking_entry")
     private Set<Long> bookingEntrys;
 
     public PlaceInfoResult() {

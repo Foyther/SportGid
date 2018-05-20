@@ -12,17 +12,20 @@ import android.kfu.service.api.*;
 import android.kfu.service.api.converter.PlaceToPlaceInfoResultConverter;
 import android.kfu.service.api.exception.AccessDeniedException;
 import android.kfu.service.api.exception.DeadAccessTokenException;
+import android.kfu.service.api.exception.InvalidFormException;
 import android.kfu.service.api.exception.NotFound.ComplaintNotFoundException;
 import android.kfu.service.api.exception.NotFound.PlaceNotFoundException;
 import android.kfu.service.api.exception.NotFound.ReviewNotFoundException;
 import android.kfu.service.api.exception.NotFound.UserNotFoundException;
 import android.kfu.service.api.exception.TimeIsBookedException;
 import android.kfu.service.api.response.ApiResult;
+import android.kfu.service.api.response.ListMapResult;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @RestController
@@ -132,6 +135,9 @@ public class PlaceController {
         try {
             User temp = userService.getByAccessToken(token);
             Place place = placeService.getById(id);
+            if(body == null){
+                throw new InvalidFormException();
+            }
             Review review = new Review(new Date().getTime(), temp, body, place, Integer.valueOf(rating));
             Set<Review> reviewSet = place.getReviews();
             reviewSet.add(review);
@@ -146,6 +152,8 @@ public class PlaceController {
             result.setCode(errorCodes.getInvalidOrOldAccessToken());
         } catch (ReviewNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
+        } catch (InvalidFormException e) {
+            result.setCode(errorCodes.getInvalidForm());
         }
         return result;
     }
@@ -300,5 +308,18 @@ public class PlaceController {
         int rating = i / (place.getReviews().size() + 1);
         place.setRating(rating);
         return place;
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public ApiResult list(@RequestParam("maps") List<Long> maps) {
+        ApiResult result = new ApiResult(errorCodes.getSuccess());
+        try {
+            ListMapResult listMap = new ListMapResult();
+            listMap.setMaps(mapService.getByListId(maps));
+            result.setBody(listMap);
+        } catch (NotFoundException e) {
+            result.setCode(errorCodes.getNotFound());
+        }
+        return result;
     }
 }

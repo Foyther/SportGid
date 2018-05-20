@@ -8,6 +8,7 @@ import android.kfu.service.api.exception.NotFound.PlaceNotFoundException;
 import android.kfu.service.api.impl.PlaceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,16 +19,13 @@ import java.util.Set;
 /**
  * Created by Nurislam on 18.12.2017.
  */
-@RestController
-@RequestMapping("/")
+@Controller
 public class StartController {
-    @Autowired
-    PlaceService placeService;
 
     @Autowired
     private KindOfSportsService service;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/start", method = RequestMethod.GET)
     public String start(){
 //        addSports("Футбол", "photo");
 //        addSports("Баскетбол", "photo");
@@ -35,12 +33,8 @@ public class StartController {
 //        addSports("Гандбол", "photo");
 //        addSports("Теннис", "photo");
 //        addSports("Пинг-понг", "photo");
-        return "main_menu";
+        return "menu";
     }
-
-//    public void deletePlaceById(int i) throws PlaceNotFoundException {
-//        placeService.deleteById(10l);
-//    }
 
     public void addSports(String name, String photo){
         KindOfSport sport = new KindOfSport(name, photo);

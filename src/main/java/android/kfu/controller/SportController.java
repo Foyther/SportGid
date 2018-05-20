@@ -9,6 +9,7 @@ import android.kfu.service.api.EventService;
 import android.kfu.service.api.KindOfSportsService;
 import android.kfu.service.api.PlaceService;
 import android.kfu.service.api.converter.EventToEventInfoResultConverter;
+import android.kfu.service.api.converter.PlaceToPlaceInfoResultConverter;
 import android.kfu.service.api.exception.DeadAccessTokenException;
 import android.kfu.service.api.exception.NotFound.EventNotFoundException;
 import android.kfu.service.api.exception.NotFound.KindOfSportNotFoundException;
@@ -16,6 +17,7 @@ import android.kfu.service.api.exception.NotFound.PlaceNotFoundException;
 import android.kfu.service.api.exception.NotFound.UserNotFoundException;
 import android.kfu.service.api.response.ApiResult;
 import android.kfu.service.api.response.EventInfoResult;
+import android.kfu.service.api.response.PlaceInfoResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -47,17 +49,20 @@ public class SportController {
     @Autowired
     private EventToEventInfoResultConverter eventToEventInfoResultConverter;
 
+    @Autowired
+    private PlaceToPlaceInfoResultConverter placeToPlaceInfoResultConverter;
+
     @RequestMapping(value = "/{id}/places", method = RequestMethod.GET)
     public ApiResult sportPlacesByIdAndCity(@PathVariable("id") long id,
                                             String city) {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
             KindOfSport sport = service.getById(id);
-            Set<Place> list = placeService.getAllBySportAndCity(sport, city);
+            Set<PlaceInfoResult> list = getPlaces(placeService.getAllBySportAndCity(sport, city));
             result.setBody(list);
         } catch (KindOfSportNotFoundException ex) {
             result.setCode(errorCodes.getNotFound());
-        } catch (PlaceNotFoundException e) {
+        } catch (PlaceNotFoundException | EventNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
         }
         return result;
@@ -124,6 +129,14 @@ public class SportController {
         Set<EventInfoResult> results = new HashSet<>();
         for (Event event: events) {
             results.add(eventToEventInfoResultConverter.getEventInfoResult(event));
+        }
+        return results;
+    }
+
+    private Set<PlaceInfoResult> getPlaces(Set<Place> places) throws EventNotFoundException {
+        Set<PlaceInfoResult> results = new HashSet<>();
+        for (Place place: places) {
+            results.add(placeToPlaceInfoResultConverter.getPlaceInfoResult(place));
         }
         return results;
     }

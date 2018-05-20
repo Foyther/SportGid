@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void editUser(String accessToken, EditProfileForm editProfileForm) 
+    public void editUser(String accessToken, EditProfileForm editProfileForm)
             throws DeadAccessTokenException, UserNotFoundException, InvalidFormException {
         if (editProfileFormValidator.validate(editProfileForm)) {
             if (authService.isAccessTokenActive(accessToken)) {
