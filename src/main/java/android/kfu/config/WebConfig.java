@@ -23,7 +23,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public UrlBasedViewResolver viewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setContentType("text/html;charset=UTF-8");
+        resolver.setContentType("charset=UTF-8");
         resolver.setPrefix("");
         resolver.setSuffix(".jsp");
         resolver.setViewClass(JstlView.class);
