@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <nav class="navbar navbar-default">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<%--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">--%>
     <div class="container-fluid">
         <p>1. Общие условия использования приложения SportGid<br>
             1.1. Приложение SportGid (далее – «Приложение») представляет собой систему интерактивного обслуживания в режиме реального времени во всемирной сети Интернет и включающую в себя информационные услуги и данные, предоставляемые администрацией приложения Sports.ru и третьими лицами.<br>
