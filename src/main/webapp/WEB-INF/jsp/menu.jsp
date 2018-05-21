@@ -1,4 +1,5 @@
-
+<%@ page language="java" contentType="application/json; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <p>1. Общие условия использования сайта Sports.ru<br>
