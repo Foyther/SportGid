@@ -33,7 +33,7 @@ public class StartController {
 //        addSports("Гандбол", "photo");
 //        addSports("Теннис", "photo");
 //        addSports("Пинг-понг", "photo");
-        return "menu";
+        return "index";
     }
 
     public void addSports(String name, String photo){
