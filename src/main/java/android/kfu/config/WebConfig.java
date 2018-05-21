@@ -21,9 +21,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public UrlBasedViewResolver setupViewResolver() {
+    public UrlBasedViewResolver viewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/jsp/");
+        resolver.setPrefix("");
         resolver.setSuffix(".jsp");
         resolver.setViewClass(JstlView.class);
         resolver.setRedirectContextRelative(false);
@@ -31,15 +31,18 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
 
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("menu");
+    //    public void addViewControllers(ViewControllerRegistry registry) {
+//        registry.addViewController("/").setViewName("menu");
+//    }
+    @Override
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations("/WEB-INF/jsp/");
     }
 
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.defaultContentType(MediaType.APPLICATION_JSON);
     }
-
 
 
 }
