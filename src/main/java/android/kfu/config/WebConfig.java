@@ -37,7 +37,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 //    }
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("/WEB-INF/jsp/");
+        registry.addResourceHandler("/**").addResourceLocations("/resources/templates/jsp");
     }
 
     @Override

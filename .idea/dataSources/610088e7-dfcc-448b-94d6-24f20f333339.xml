@@ -9,8 +9,8 @@
     </database>
     <schema id="3" parent="2" name="public">
       <ObjectId>2200</ObjectId>
-      <IntrospectionTimestamp>2018-05-17.22:47:50.208</IntrospectionTimestamp>
-      <IntrospectionStateNumber>150732065</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2018-05-22.14:51:23.598</IntrospectionTimestamp>
+      <IntrospectionStateNumber>152714598</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -68,7 +68,7 @@
     </table>
     <table id="15" parent="3" name="places">
       <ObjectId>9462475</ObjectId>
-      <StateNumber>149645269</StateNumber>
+      <StateNumber>152714582</StateNumber>
     </table>
     <table id="16" parent="3" name="places_kind_of_sports">
       <ObjectId>9462483</ObjectId>
@@ -25458,13 +25458,13 @@
     </column>
     <column id="4009" parent="15" name="contacts">
       <Position>4</Position>
-      <DataType>varchar(255)|0</DataType>
-      <StateNumber>149524448</StateNumber>
+      <DataType>varchar(20)|0</DataType>
+      <StateNumber>152714582</StateNumber>
     </column>
     <column id="4010" parent="15" name="description">
       <Position>5</Position>
-      <DataType>varchar(255)|0</DataType>
-      <StateNumber>149524448</StateNumber>
+      <DataType>varchar(2000)|0</DataType>
+      <StateNumber>152714598</StateNumber>
     </column>
     <column id="4011" parent="15" name="photo">
       <Position>6</Position>

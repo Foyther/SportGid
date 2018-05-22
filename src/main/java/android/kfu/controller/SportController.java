@@ -4,10 +4,8 @@ import android.kfu.entities.Event;
 import android.kfu.entities.KindOfSport;
 import android.kfu.entities.Place;
 import android.kfu.entities.User;
-import android.kfu.service.api.ErrorCodes;
-import android.kfu.service.api.EventService;
-import android.kfu.service.api.KindOfSportsService;
-import android.kfu.service.api.PlaceService;
+import android.kfu.service.api.*;
+import android.kfu.service.api.checking.IsSubscribedService;
 import android.kfu.service.api.converter.EventToEventInfoResultConverter;
 import android.kfu.service.api.converter.PlaceToPlaceInfoResultConverter;
 import android.kfu.service.api.exception.DeadAccessTokenException;
@@ -52,6 +50,12 @@ public class SportController {
     @Autowired
     private PlaceToPlaceInfoResultConverter placeToPlaceInfoResultConverter;
 
+    @Autowired
+    private IsSubscribedService isSubscribedService;
+
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value = "/{id}/places", method = RequestMethod.GET)
     public ApiResult sportPlacesByIdAndCity(@PathVariable("id") long id,
                                             String city) {
@@ -71,16 +75,19 @@ public class SportController {
     //TODO search by city
     @RequestMapping(value = "/{id}/events", method = RequestMethod.GET)
     public ApiResult sportEventsByIdAndCity(@PathVariable("id") long id,
-                                            String city) {
+                                            String city,
+                                            String token) {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         try {
             KindOfSport sport = service.getById(id);
-            Set<EventInfoResult> list = getEvents(eventService.getAllBySport(sport));
+            Set<EventInfoResult> list = getEvents(eventService.getAllBySport(sport), token);
             result.setBody(list);
         } catch (KindOfSportNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
-        } catch (EventNotFoundException e) {
+        } catch (EventNotFoundException | UserNotFoundException e) {
             result.setCode(errorCodes.getNotFound());
+        }  catch (DeadAccessTokenException e) {
+            e.printStackTrace();
         }
         return result;
     }
@@ -125,10 +132,12 @@ public class SportController {
         return result;
     }
 
-    private Set<EventInfoResult> getEvents(Set<Event> events) throws EventNotFoundException {
+    private Set<EventInfoResult> getEvents(Set<Event> events, String token) throws EventNotFoundException, UserNotFoundException, DeadAccessTokenException {
         Set<EventInfoResult> results = new HashSet<>();
         for (Event event: events) {
-            results.add(eventToEventInfoResultConverter.getEventInfoResult(event));
+            EventInfoResult eventInfoResult = eventToEventInfoResultConverter.getEventInfoResult(event);
+            eventInfoResult.setSubscribed(isSubscribedService.isSubscribed(event, userService.getByAccessToken(token)));
+            results.add(eventInfoResult);
         }
         return results;
     }
