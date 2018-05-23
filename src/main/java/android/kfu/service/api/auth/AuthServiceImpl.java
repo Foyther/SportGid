@@ -102,9 +102,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserToken registration(RegistrationForm registrationForm) throws IncorrectRegistrationFormException, UserWithSameEmailAlreadyExistsException {
+    public UserToken registration(RegistrationForm registrationForm, boolean social) throws IncorrectRegistrationFormException, UserWithSameEmailAlreadyExistsException {
 
-        boolean validation = registrationFormValidator.validate(registrationForm);
+        boolean validation = registrationFormValidator.validate(registrationForm, social);
         if (!validation) {
             throw new IncorrectRegistrationFormException();
         } else {

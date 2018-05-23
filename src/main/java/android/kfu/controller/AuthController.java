@@ -75,7 +75,7 @@ public class AuthController {
         ApiResult result = new ApiResult(errorCodes.getSuccess());
         RegistrationForm form = new RegistrationForm(name,surname, email, password, city);
         try {
-            UserToken token = authService.registration(form);
+            UserToken token = authService.registration(form,false);
             if (token != null) {
                 result.setBody(token);
             } else {
@@ -111,5 +111,50 @@ public class AuthController {
             result.setCode(errorCodes.getInvalidRequest());
         }
         return result;
-    } 
+    }
+
+    @RequestMapping(value = "/social_login", method = RequestMethod.POST)
+    public ApiResult socialLogin(String token,
+                                 String name,
+                                 String surname,
+                                 String city) {
+        ApiResult result = new ApiResult(errorCodes.getSuccess());
+        User user;
+        if (token != null) {
+            try {
+                UserToken tokenNew;
+                try{
+                   user = userService.getByAccessToken(token);
+                } catch (UserNotFoundException e) {
+                    RegistrationForm form = new RegistrationForm(name,surname, token, token, city);
+
+                        tokenNew = authService.registration(form, true);
+
+                    if (tokenNew != null) {
+                        result.setBody(tokenNew);
+                    } else {
+                        result.setCode(errorCodes.getNotFound());
+                    }
+                    return result;
+                }
+
+                tokenNew = user.getToken();
+                if (token != null) {
+                    result.setBody(tokenNew);
+                } else {
+                    result.setCode(errorCodes.getNotFound());
+                }
+            } catch (DeadAccessTokenException ex) {
+                result.setCode(errorCodes.getInvalidOrOldAccessToken());
+                Logger.getLogger(AuthController.class.getName()).log(Level.SEVERE, null, ex);
+            }  catch (IncorrectRegistrationFormException e1) {
+                result.setCode(errorCodes.getInvalidForm());
+            } catch (UserWithSameEmailAlreadyExistsException e1) {
+                result.setCode(errorCodes.getUserWithSameLoginAlreadyExists());
+            }
+        } else {
+            result.setCode(errorCodes.getInvalidRequest());
+        }
+        return result;
+    }
 }

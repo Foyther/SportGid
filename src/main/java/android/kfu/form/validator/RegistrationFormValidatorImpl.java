@@ -9,26 +9,26 @@ import android.kfu.form.RegistrationForm;
 import android.kfu.tools.EmailValidator;
 import android.kfu.tools.StringTool;
 
-public class RegistrationFormValidatorImpl implements RegistrationFormValidator{
+public class RegistrationFormValidatorImpl implements RegistrationFormValidator {
 
-    
+
     private int minNameLength;
-    
+
     private int maxNameLength;
 
     private int minEmailLength;
-    
+
     private int maxEmailLength;
-    
+
     private int minPasswordLength;
-    
+
     private int maxPasswordLength;
-    
+
     private EmailValidator emailValidator;
 
-    public RegistrationFormValidatorImpl(int minNameLength, int maxNameLength, 
-            int minEmailLength, int maxEmailLength, int minPasswordLength, 
-            int maxPasswordLength, EmailValidator emailValidator) {
+    public RegistrationFormValidatorImpl(int minNameLength, int maxNameLength,
+                                         int minEmailLength, int maxEmailLength, int minPasswordLength,
+                                         int maxPasswordLength, EmailValidator emailValidator) {
         this.minNameLength = minNameLength;
         this.maxNameLength = maxNameLength;
         this.minEmailLength = minEmailLength;
@@ -39,26 +39,29 @@ public class RegistrationFormValidatorImpl implements RegistrationFormValidator{
     }
 
     @Override
-    public boolean validate(RegistrationForm registrationForm) {
+    public boolean validate(RegistrationForm registrationForm, boolean social) {
         if (registrationForm == null) {
             return false;
         } else {
-            return checkEmail(registrationForm.getEmail()) &&
-                    checkName(registrationForm.getName()) &&
-                    checkPassword(registrationForm.getPassword());
+            if (social) {
+                return true;
+            } else {
+                return checkName(registrationForm.getName()) &&
+                    checkEmail(registrationForm.getEmail()) &&
+                        checkPassword(registrationForm.getPassword());
+            }
         }
     }
-    
-    
-    
-    private boolean checkName(String name){
+
+
+    private boolean checkName(String name) {
         return StringTool.isInBounds(name, minNameLength, maxNameLength);
     }
 
-    private boolean checkPassword(String password){
+    private boolean checkPassword(String password) {
         return StringTool.isInBounds(password, minPasswordLength, maxPasswordLength);
     }
-    
+
     private boolean checkEmail(String email) {
         if (email == null) {
             return false;
@@ -67,9 +70,9 @@ public class RegistrationFormValidatorImpl implements RegistrationFormValidator{
                 return false;
             }
         }
-        
+
         return emailValidator.validate(email);
     }
-    
-    
+
+
 }

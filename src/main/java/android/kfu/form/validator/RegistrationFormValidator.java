@@ -12,7 +12,6 @@ import android.kfu.form.RegistrationForm;
  * @author rtmss
  */
 public interface RegistrationFormValidator {
-    
-    boolean validate(RegistrationForm registrationForm);
-    
+
+    boolean validate(RegistrationForm registrationForm, boolean social);
 }

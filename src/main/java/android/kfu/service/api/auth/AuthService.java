@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface AuthService {
-    
+
+    UserToken registration(RegistrationForm registrationForm, boolean social) throws IncorrectRegistrationFormException, UserWithSameEmailAlreadyExistsException;
+
     boolean isAccessTokenActive(String accessToken);
     
     User getUserByAccessToken(String accessToken) throws DeadAccessTokenException;
@@ -27,6 +29,4 @@ public interface AuthService {
     
     UserToken getToken(LoginForm loginForm) throws IncorrectLoginDataException;
     
-    UserToken registration(RegistrationForm registrationForm) throws IncorrectRegistrationFormException,
-                                                                UserWithSameEmailAlreadyExistsException;
-}
+   }
